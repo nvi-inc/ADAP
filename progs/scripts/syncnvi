@@ -1,0 +1,32 @@
+#!/bin/bash
+LOG='/sgpvlbi/progs/logs/nvi/rsync.log'
+MAX_SIZE=10000000
+
+# Sync /sgpvlbi/ folders
+rsync -avz --exclude-from='/sgpvlbi/progs/scripts/nvi-exclude.txt' /sgpvlbi/ nvi:/sgpvlbi --log-file=$LOG -q
+
+# copy nvivlbi version of ADAP software into oper's directory:
+rsync -avz  nvi:/sgpvlbi/progs/adap_nvi/ /home/oper/nvi/adap_nvi/ --log-file=$LOG-adap -q
+
+
+# GZIP file if too big 
+if [ -f "$LOG" ]; then
+	file_size=$(stat -c%s $LOG)
+	if ((file_size > MAX_SIZE)); then
+   		name=${LOG%.*}'-'$(date "+%Y%m%d-%H%M%S")'.log.gz'
+		gzip $LOG
+		mv $LOG'.gz' ${name}
+	fi
+fi
+
+# Dump MariaDB
+mysqldump -u oper -poper --databases ivscc vlbi > /tmp/all_db.sql
+# Open tunnel to NVI
+ssh -f -N -T -M Tnvi
+# Load copy to nvi database
+mysql -uoper -poper -h 127.0.0.1 -P 3308 < /tmp/all_db.sql
+# Close tunnel
+ssh -T -O exit Tnvi
+rm /tmp/all_db.sql
+echo 'MySQL dump ended at '$(date) >> "/home/oper/nvi/mysql.log"
+

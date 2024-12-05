@@ -1,0 +1,18 @@
+#!/bin/tcsh  
+set called=($_)
+
+if ( "$called" != "" ) then  ### called by source 
+   echo "branch 1"
+   set script_fn=`readlink -f $called[2]`
+else                         ### called by direct execution of the script
+   echo "branch 2"
+   set script_fn=`readlink -f $0`
+endif
+
+echo "A:$0"
+echo "B:$called"
+set script_dir=`dirname $script_fn`
+
+echo "script file name=$script_fn"
+echo "script dir=$script_dir"
+

@@ -1,0 +1,22 @@
+#!/bin/bash
+LOG='/home/oper/logs/rsync.log'
+MAX_SIZE=10000000
+
+rsync -avz /sgpvlbi/sessions oper@gs61av-vlbidev01:/sgpvlbi/ --log-file=$LOG -q
+rsync -avz /sgpvlbi/apriori oper@gs61av-vlbidev01:/sgpvlbi/ --log-file=$LOG -q
+rsync -avz /sgpvlbi/control oper@gs61av-vlbidev01:/sgpvlbi/ --log-file=$LOG -q
+rsync -avz /sgpvlbi/level2 oper@gs61av-vlbidev01:/sgpvlbi/ --log-file=$LOG -q
+rsync -avz /sgpvlbi/level3 oper@gs61av-vlbidev01:/sgpvlbi/ --log-file=$LOG -q
+rsync -avz /sgpvlbi/processing oper@gs61av-vlbidev01:/sgpvlbi/ --log-file=$LOG -q
+rsync -avz /sgpvlbi/solutions oper@gs61av-vlbidev01:/sgpvlbi/ --log-file=$LOG -q
+rsync -avz /sgpvlbi/trop oper@gs61av-vlbidev01:/sgpvlbi/ --log-file=$LOG -q
+
+# GZIP file if too big 
+if [ -f "$LOG" ]; then
+	file_size=$(stat -c%s $LOG)
+	if ((file_size > MAX_SIZE)); then
+   		name=${LOG%.*}'-'$(date "+%Y%m%d-%H%M%S")'.log.gz'
+		gzip $LOG
+		mv $LOG'.gz' ${name}
+	fi
+fi

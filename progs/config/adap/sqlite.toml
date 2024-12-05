@@ -1,0 +1,4 @@
+[Credentials]
+ivscc = "sqlite:////sgpvlbi/progs/config/adap/ivscc.db"
+
+

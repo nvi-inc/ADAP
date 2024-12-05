@@ -1,0 +1,35 @@
+# Logger configuration information
+version = 1
+disable_existing_loggers = false
+exit_on_demand = true
+
+# Custom levels
+[levels]
+START = 11
+STOP = 12
+BEGIN = 13
+END = 14
+SEVERE = 41
+
+# Output format
+[formatters.default]
+format = "%(time)s %(user)-15s - %(message)s"
+
+# Handlers
+[handlers.console]
+level = "INFO"
+class = "logging.StreamHandler"
+formatter = "default"
+stream = "ext://sys.stdout"
+
+[handlers.file]
+level = "DEBUG"
+class = "logging.handlers.RotatingFileHandler"
+formatter = "default"
+filename = "/sgpvlbi/auto/posting/to_cddis/log/submitted.log"
+maxBytes = 2097152
+backupCount = 10
+
+[loggers.default]
+level = "DEBUG"
+handlers = [ "file"]

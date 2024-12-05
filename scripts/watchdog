@@ -1,0 +1,11 @@
+#!/bin/bash -i
+#
+#
+source /home/oper/.bashrc
+#
+# Execute setup script in same folder
+SCRIPT_DIR=$( dirname "${BASH_SOURCE[0]}" )
+source $SCRIPT_DIR/setup
+
+# Execute VLBIwatchdog.py
+nohup python $APP_DIR/src/VLBIwatchdog.py -c $CONFIG_DIR/vlbi.toml > $PROBLEM_DIR/${0##*/}.txt 2>&1 &

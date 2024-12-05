@@ -1,0 +1,16 @@
+[Server]
+credentials = "mberube:Password123!"
+host = "gs61av-vlbiprd01.spocc.gsfc.nasa.gov"
+port = 5672
+api = 15672
+vhost = '/'
+
+[Exchanges]
+default = "VLBI"
+log = "LOG"
+
+[Problems]
+queue = "VLBIproblems"
+folder = "/sgpvlbi/progs/logs/adap/problems"
+wait = 3600
+

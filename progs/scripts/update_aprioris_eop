@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+source /opt/intel/oneapi/setvars.sh ia32
+source /sgpvlbi/progs/adap_v2/scripts/setup
+
+python $APP_DIR/src/tools/aprioris_eop.py -c $CONFIG_DIR/vlbi.toml

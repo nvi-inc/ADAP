@@ -1,0 +1,33 @@
+[Queues.monit]
+VLBIlogger = "scripts/logger"
+VLBImassloading = "scripts/massloading"
+VLBIweb = "scripts/web"
+VLBIvmf = "scripts/vmf"
+#
+VLBIuploader = "scripts/uploader"
+VLBIaux = "scripts/auxfiles"
+VLBIchkskd = "scripts/chkskd"
+VLBIcontrol = "scripts/control"
+VLBIcorrelators = "scripts/correlators"
+VLBImets = "scripts/mets"
+VLBIdatacenters = "scripts/datacenters"
+VLBItoday = "scripts/today"
+VLBIvgosdb = "scripts/vgosdb.csh"
+VLBIvlbalogs = "scripts/vlbalogs"
+
+[Queues.test]
+
+[AprioriEOP]
+server = "cddis"
+max_delay = 30
+
+[AprioriEOP.files]
+usno_finals = "gsfc/ancillary/solve_apriori/usno_finals.erp"
+usno500_finals = "gsfc/ancillary/solve_apriori/usno500_finals.erp"
+
+[Scanners]
+keys = ["scanning dc", "scanning corr"]
+
+[Web]
+url = "https://ivscc.gsfc.nasa.gov/sessions/index.html"
+

@@ -1,0 +1,9 @@
+[project]
+name = "ADAP"
+version = "2.2.0"
+requires-python = ">=3.8"
+#
+dependencies = [
+    "tzlocal==2.1",
+    "urllib3==1.25.10",
+]

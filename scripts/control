@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+# Execute setup script in same folder
+SCRIPT_DIR=$( dirname "${BASH_SOURCE[0]}" )
+source $SCRIPT_DIR/setup
+
+# Execute 
+nohup python $APP_DIR/src/VLBIcontrol.py -c $CONFIG_DIR/vlbi.toml -q VLBIcontrol > $PROBLEM_DIR/${0##*/}.txt 2>&1 &

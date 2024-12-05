@@ -1,0 +1,9 @@
+server = "massloading"
+summary = "bds_summary.txt"
+
+[Model.merra2]
+folder = "/sgpvlbi/apriori/merra2"
+
+[Model.geosfpit]
+folder = "/sgpvlbi/apriori/geosfpit"
+

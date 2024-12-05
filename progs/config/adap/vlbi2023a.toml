@@ -1,0 +1,145 @@
+# VLBI folders for specific data
+[VLBIfolders]
+control = "/sgpvlbi/sessions/control"
+session = "/sgpvlbi/sessions"
+vgosdb = "/sgpvlbi/level2/vgosDB"
+vmf = "/sgpvlbi/trop/vienna3"
+
+# General information for all VLBI applications
+[Applications.VLBI]
+can_download = ["gs61av-vlbiprd01"]
+can_upload = ["gs61av-vlbiprd01"]
+dev_server = "gs61av-vlbidev01"
+failed_upload = "/sgpvlbi/auto/posting/to_cddis"
+
+# Application downloading VMF data
+[Applications.VMF]
+server = "vmf"
+
+# Information for running sked
+[Applications.Sked]
+exec = "sked"
+vex = "vcc {path}\nq\n"
+azel = "xlist clear\nxlist azel\nxlist dur\nunit {path}\nli\nquit\n"
+
+# Script to start monitoring intensive session
+[Applications.Intensive]
+scanner = "scripts/intmonit"
+
+# Information for starting Data Center scanners
+[Applications.DataCenters]
+scanner = "scripts/scanner.dc"
+
+[Applications.DataCenters.Folders]
+aux = "ivsdata/aux"
+format = "ivsformat"
+control = "ivscontrol"
+db = "ivsdata/db"
+vgosdb = "ivsdata/vgosdb"
+
+# Information for starting correlator scanners
+[Applications.Correlators]
+scanner = "scripts/scanner.corr"
+
+# Information needed by ANDASH
+[Applications.ANDASH]
+log = "/sgpvlbi/auto/posting/to_cddis/log/submitted.log"
+
+# Information used by APS
+[Applications.APS]
+analysis_center = "NASA"
+submit_to = "cddis"
+# Default control files
+standard = "/sgpvlbi/control/gsf2023a/opa_d_cddisa_vgosdb.lcl"
+intensive = "/sgpvlbi/control/gsf2023a/opa_i_cddisa_vgosdb.lcl"
+vgos = "/sgpvlbi/control/gsf2023a/opa_d_cddisa_vgosdb.lcl"
+can_submit = ["gs61av-vlbiprd01"]
+spool = "/home/oper/nuSolve*/"
+
+# Information for EOPM baseline rejections
+[Applications.APS.EOPM]
+sites = '/sgpvlbi/apriori/models/2023a_mod.sit'
+min_dist = 5000000
+
+# Mail information for all analysts and recipients for emails.
+[Applications.APS.Mail]
+sbolotin = "sergei.bolotin@nasa.gov"
+kbaver = "karen.d.baver@nasa.gov"
+mberube = "mario.berube@nasa.gov"
+oper = "gsfc_oper@nasa.gov"
+server = "smtp.ndc.nasa.gov"
+recipients  = ["ivs-analysis@lists.nasa.gov"]
+submit_to = "cddis"
+[Applications.APS.Mail.reply]
+intensive = "karen.d.baver@nasa.gov"
+standard = "sergei.bolotin@nasa.gov"
+
+# Path to special files.
+[Applications.APS.Files]
+LeapSeconds = "/sgpvlbi/apriori/calc/ut1ls.dat"
+HelpEOPS = ["MK5_ROOT", "help/eops_format.txt"]
+
+# Location of old spoll files for generating old reports.
+[Applications.APS.Files.Spool]
+sbolotin = "/home/oper/nuSolve.slb/Reports/"
+mberube =  "/home/oper/nuSolve.slb/Reports/"
+
+# Special words for cleaning notes from correlator report
+[Applications.APS.CorrNotes]
+words = ["longer cable", "data minus", "manual phase cal", "manual pcal", "no pcal", "low pcal", "low ampli", "removed channel", 
+         "non detection", "warm receiver", "rfi channel", "rfi band", "channel flagged", "no signal", "fringe fitting",
+         "fringe amplitude", 'please download', 'ftp:']
+exact = ["g code", "s-band", "x-band", "transfer rate:"]
+
+# Regex for re-routing aux files.
+[Applications.AUXfiles.Filters]
+sta = "(?P<expid>\\w{4,6})(?P<stnid>\\w{2})\\.(?P<type>|log|prc|wx|cd|snp|log\\.sum)$"
+full_log = "(?P<expid>\\w{4,6})(?P<stnid>\\w{2})_full\\.(?P<type>log)"
+ses = "(?P<expid>\\w{4,6})\\.(?P<type>|skd|vex|azel|txt|corr)$"
+sky = "(?P<expid>\\w{4,6})_polazel_p(\\d+)\\.(?P<type>gif|ps)$"
+rep = "(?P<expid>\\w{4,6})(?P<acid>|-\\w+-|-)(?P<type>|sumops|analysis-report|analysis-spoolfile|spool-report)(?P<timestamp>|-\\d{8}-\\d{4,6}|-\\d{8}|)\\.txt$"
+
+# Name of control files in $CONFIG_DIR folder
+[ControlFiles]
+RMQ = "rmq.toml"
+Database = "database.toml"
+Servers = "servers.toml"
+Notify = "notify.toml"
+Schedules = "schedules.toml"
+MassLoading = "massloading.toml"
+IVSweb = "web.toml"
+VGOSdb = "vgosdb.toml"
+APS = "aps.toml"
+Emails = "email.toml"
+Mets = "mets.toml"
+Crons = "crons.toml"
+IVSmail = "ivsmail.toml"
+NVIreport = "nvi.toml"
+AprioriEOP = "apriori_eop.toml"
+Watchdog = "watchdog.toml"
+Types = "types.json"
+
+# Special codes for files
+[FileCodes]
+skd = "{ses}.skd"
+vex = "{ses}.vex"
+corr = "{ses}.corr"
+log = "{ses}{sta}.log"
+sumops = "{ses}-sumops.txt"
+vlbacal = "{ses}cal.vlba"
+vlbalog = "{ses}log.vlba"
+
+# VLBA files neeted for intensives
+[VLBA]
+stations = "VaBrFdHnKpLaMkNlPtOvSc"
+logs = ["vlbalog", "vlbacal"]
+waitforlog = 0
+
+# Example for setting tunnel 
+[Tunnel.example]
+host = "host_name"
+user = "user_name"
+rsa = "~/.ssh/id_rsa"
+remote = 1234
+local = 1234
+

@@ -1,0 +1,10 @@
+Testing = false
+
+[Script]
+path = "/sgpvlbi/progs/bin/aprioris_eop"
+
+[Notifications]
+recipients = ["mario.berube@nasa.gov"]
+sender = "VLBI watchdog <do-not-reply@vlbiprd01.nasa.gov>"
+server = "smtp.ndc.nasa.gov"
+

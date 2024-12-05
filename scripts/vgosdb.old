@@ -1,0 +1,20 @@
+#!/bin/tcsh
+#
+set called=($_)
+
+if ( "$called" != "" ) then  ### called by source 
+   set script_fn=`readlink -f $called[2]`
+else                         ### called by direct execution of the script
+   set script_fn=`readlink -f $0`
+endif
+
+set SCRIPT_DIR=`dirname $script_fn`
+
+# Execute setup script in same folder
+echo $SCRIPT_DIR
+source $SCRIPT_DIR/setup.csh
+
+unsetenv DISPLAY
+
+# Execute VLBImonit.py
+#nohup python $APP_DIR/src/VLBIvgosdb.py -c $CONFIG_DIR/vlbi.toml -q VLBIvgosdb > $PROBLEM_DIR/${0##*/}.txt 2>&1 &

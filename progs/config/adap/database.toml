@@ -1,0 +1,5 @@
+[Credentials]
+ivscc = "mysql+pymysql://oper:oper@localhost/ivscc"
+vlbi = "mysql+pymysql://oper:oper@localhost/vlbi"
+
+

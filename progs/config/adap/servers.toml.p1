@@ -1,0 +1,210 @@
+[Alias.Correlator]
+gsi = ["bkg-gsi"]
+bonn = ["bkg-bonn"]
+usno = ["bkg-wash"]
+wash = ["bkg-wash"]
+vien = ["wien", "bkg-wien"]
+wien = ["bkg-wien"]
+wetz = ["cddis"]
+utas = ["bkg-utas"]
+shao = ["bkg-shao"]
+
+[Alias.DataCenter]
+cddis = ["earthdata"]
+
+[DataCenter.earthdata]
+name = "Earth Data"
+url = "cddis.nasa.gov"
+protocol = "https"
+first_page = "archive"
+timezone = "US/Eastern"
+upload = "upload_cddis"
+script = "https://depot.cddis.eosdis.nasa.gov/CDDIS_FileUpload/"
+root = "/archive/vlbi"
+parser = "earthdata_parser"
+
+[DataCenter.cddis]
+name = "CDDIS-sftp"
+url = "gdc.cddis.eosdis.nasa.gov"
+protocol = "sftp"
+timezone = "US/Eastern"
+script = "https://depot.cddis.eosdis.nasa.gov/CDDIS_FileUpload/"
+upload = "upload_cddis"
+root = "/pub/vlbi"
+scan = "/pub/vlbi/RECENT"
+
+[DataCenter.opar]
+name = "OPAR"
+url = "ivsopar.obspm.fr"
+protocol = "ftp"
+timezone = "UTC"
+script = "https://ivsopar.obspm.fr/upload/scripts/upload.php"
+root = "/pub/vlbi"
+scan = "/pub/vlbi/RECENT"
+
+[DataCenter.bkg]
+name = "BKG"
+url = "ivs.bkg.bund.de"
+protocol = "ftp"
+timezone = "UTC"
+root = "/pub/vlbi"
+scan = "/pub/vlbi/RECENT"
+
+[Server.vlba]
+name = "VLBA"
+url = "www.vlba.nrao.edu"
+protocol = "http"
+first_page = "/astro/VOBS/IVS"
+file_name = "{year}/{ses}/{file}"
+timezone = "US/Eastern"
+root = "/astro/VOBS/IVS"
+
+[Server.massloading]
+name = "MASS LOADING"
+url = "massloading.gsfc.nasa.gov"
+method = "curl"
+protocol = "https"
+root = "/imsl/load_bds/atm/"
+verify_ssl = false
+
+[Server.vmf]
+name = "VMF"
+url = "vmf.geo.tuwien.ac.at"
+protocol = "http"
+root = "/trop_products/VLBI/VMF3/VMF3_OP/daily/"
+
+[Server.ibge]
+name = "IBGE"
+url = "geoftp.ibge.gov.br"
+protocol = "ftp"
+root = "/informacoes_sobre_posicionamento_geodesico/rbmc/dados/"
+file_name = "{year}/{doy}/{station}{doy}1.zip"
+
+[Correlator.bonn]
+name = "BONN"
+url = "ftp.mpifr-bonn.mpg.de"
+protocol = "ftp"
+root = "/geoarchive/database/"
+scan = "/geoarchive/database/"
+file_name = "{db_name}.tgz"
+timezone = "Europe/Berlin"
+
+[Correlator.bkg-bonn]
+name = "BONNNN on BKG"
+url = "ivs.bkg.bund.de"
+protocol = "ftp"
+root = "/pub/vlbi/ivsdata/vgosdb_bonn/"
+scan = "/pub/vlbi/ivsdata/vgosdb_bonn/"
+file_name = "{db_name}.tgz"
+
+[Correlator.gsi]
+name = "GSI"
+url = "ftp.spacegeodesy.go.jp"
+protocol = "ftp"
+root = "/vlbi/data/db/"
+scan = "/vlbi/data/db/"
+file_name = "{db_name}.tgz"
+
+[Correlator.bkg-gsi]
+name = "GSI on BKG"
+url = "ivs.bkg.bund.de"
+protocol = "ftp"
+root = "/pub/vlbi/ivsdata/vgosdb_gsi/"
+scan = "/pub/vlbi/ivsdata/vgosdb_gsi/"
+file_name = "{db_name}.tgz"
+
+[Correlator.hays]
+name = "HAYS"
+url = "gemini.haystack.mit.edu"
+protocol = "ftp"
+root = "/pub/bband_data/"
+scan = "/pub/bband_data/"
+file_name = "{db_name}_v4.tar.gz"
+filter = "hays_filter"
+
+# Cannot connect to SHAO from vlbi servers 
+[Correlator._shao_]
+name = "SHAO"
+method = "curl"
+url = "202.127.29.4"
+protocol = "http"
+root = "/vgosDB/"
+first_page = "vgosDB"
+file_name = "{db_name}.tgz"
+parser = "shao_parser"
+
+[Correlator.bkg-shao]
+name = "SHAO on BKG"
+url = "ivs.bkg.bund.de"
+protocol = "ftp"
+root = "/pub/vlbi/ivsdata/vgosdb_shao/"
+scan = "/pub/vlbi/ivsdata/vgosdb_shao/"
+file_name = "{db_name}.tgz"
+
+[Correlator.bkg-wash]
+name = "WASH on BKG"
+url = "ivs.bkg.bund.de"
+protocol = "ftp"
+root = "/pub/vlbi/ivsdata/vgosdb_usno/"
+scan = "/pub/vlbi/ivsdata/vgosdb_usno/"
+file_name = "{db_name}.tgz"
+
+[Correlator.wien]
+name = "WIEN"
+url = "vlbi.at"
+protocol = "https"
+root = "/data/correlation/public/vgosdb"
+scan = "/data/correlation/public/vgosdb"
+file_name = "{db_name}.tgz"
+
+[Correlator.bkg-wien]
+name = "WIEN on BKG"
+url = "ivs.bkg.bund.de"
+protocol = "ftp"
+root = "/pub/vlbi/ivsdata/vgosdb_wien/"
+scan = "/pub/vlbi/ivsdata/vgosdb_wien/"
+file_name = "{db_name}.tgz"
+
+[Correlator.utas]
+name = "UTAS"
+url = "fourier.phys.utas.edu.au"
+protocol = "http"
+root = "/jmccallu/vgosDB/"
+scan = "/jmccallu/vgosDB/"
+file_name = "{db_name}.tgz"
+
+[Correlator.bkg-utas]
+name = "UTAS on BKG"
+url = "ivs.bkg.bund.de"
+protocol = "ftp"
+root = "/pub/vlbi/ivsdata/vgosdb_utas/"
+scan = "/pub/vlbi/ivsdata/vgosdb_utas/"
+file_name = "{db_name}.tgz"
+
+[Correlator.cddis]
+name = "CDDIS (sftp)"
+url = "gdc.cddis.eosdis.nasa.gov"
+protocol = "sftp"
+timezone = "US/Eastern"
+root = "/pub/vlbi/ivsdata/vgosdb/"
+scan = "/pub/vlbi/RECENT/ivsdata/vgosdb/"
+file_name = "{year}/{db_name}.tgz"
+
+[Correlator.opar]
+name = "OPAR (Data Center)"
+url = "ivsopar.obspm.fr"
+protocol = "ftp"
+timezone = "UTC"
+root = "/pub/vlbi/ivsdata/vgosdb/"
+scan = "/pub/vlbi/RECENT/ivsdata/vgosdb/"
+file_name = "{year}/{db_name}.tgz"
+
+[Correlator.bkg]
+name = "BKG (Data Center)"
+url = "ivs.bkg.bund.de"
+protocol = "ftp"
+timezone = "UTC"
+root = "/pub/vlbi/ivsdata/vgosdb/"
+scan = "/pub/vlbi/RECENT/ivsdata/vgosdb/"
+file_name = "{year}/{db_name}.tgz"
+

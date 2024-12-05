@@ -1,0 +1,70 @@
+#!/bin/bash
+# Script to upload a VLBI file to cddis
+#
+# Usage: cddis file
+#   where file is a file to uploaded
+#
+# See:
+#   http://cddis.gsfc.nasa.gov/Data_and_Derived_Products/CDDIS_File_Upload_Documentation.html
+#   for more details.
+#
+# After establishing an account and following "initial use" instructions,
+#   the following commands automate uploading one file according to option 2
+#
+# Add option -k to the first curl command only if you have an old OPENSSL
+#   version that rejects cddis's certificate
+#
+#Login (expires after 10 minutes of no activity:
+#
+
+fatal(){
+    echo -e "ERROR: cddis:" "$*" >&2
+    exit 1
+}
+
+fmtarray() {
+    local FMT="$1"; shift
+    for f in $@; do
+        printf "$FMT" "$f"
+    done
+}
+
+
+set -euo pipefail
+
+CDDIS_URL="https://depot.cddis.eosdis.nasa.gov/CDDIS_FileUpload"
+
+if ! which curl > /dev/null; then
+fatal "'curl' not found"
+fi
+
+if [[ ! -e "$HOME/.netrc" ]]; then
+fatal "$HOME/.netrc not found, see usage"
+fi
+
+if ! grep -q urs.earthdata.nasa.gov "$HOME/.netrc"; then
+fatal "$HOME/.netrc does not contain CDDIS login information, see usage"
+fi
+
+# Curl flags used:
+# -c     -- cookie jar (write)
+# -b     -- cookie jar (read)
+# -n     -- use netrc file for logins
+# -f     -- set return flag to 22 on HTTP error
+# -F     -- form data
+# -s -S  -- silent except on errors
+
+curl -c $HOME/.urs_cookies \
+-n \
+-f -s -S \
+-L \
+--ciphers DEFAULT@SECLEVEL=1 \
+$CDDIS_URL/login  
+
+curl -X POST \
+-b $HOME/.urs_cookies \
+-f -s -S \
+-F "fileType=VLBI" \
+--ciphers DEFAULT@SECLEVEL=1 \
+$(fmtarray ' -F file[]=@%s' $@) \
+$CDDIS_URL/upload/ | submitted 

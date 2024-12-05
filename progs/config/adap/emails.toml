@@ -1,0 +1,51 @@
+[server]
+gs61av-vlbiprd01 = "smtp.ndc.nasa.gov"
+gs61av-vlbidev01 = "smtp.ndc.nasa.gov"
+nvi-vlbi-2 = "gmail:/sgpvlbi/progs/config/adap/ivscc.json"
+
+[host.gs61av-vlbiprd01.sbolotin]
+sender = "sergei.bolotin@nasa.gov"
+[host.gs61av-vlbidev01.sbolotin]
+sender = "sergei.bolotin@nasa.gov"
+[host.nvi-vlbi-2.sbolotin]
+sender = "Sergei Bolotin<ivscc@nviinc.com>"
+reply-to = "sergei.bolotin@nasa.gov"
+
+[host.gs61av-vlbiprd01.kbaver]
+sender = "karen.d.baver@nasa.gov"
+[host.gs61av-vlbidev01.kbaver]
+sender = "karen.d.baver@nasa.gov"
+[host.nvi-vlbi-2.kbaver]
+sender = "Karen D. Baver<ivscc@nviinc.com>"
+reply-to = "karen.d.baver@nasa.gov"
+
+[host.gs61av-vlbiprd01.mberube]
+sender = "mario.berube@nasa.gov"
+[host.gs61av-vlbidev01.mberube]
+sender = "mario.berube@nasa.gov"
+[host.nvi-vlbi-2.mberube]
+sender = "Mario Berube<ivscc@nviinc.com>"
+reply-to = "mario.berube@nasa.gov"
+
+[host.gs61av-vlbiprd01.jgipson]
+sender = "john.m.gipson@nasa.gov"
+[host.gs61av-vlbidev01.jgipson]
+sender = "john.m.gipson@nasa.gov"
+[host.nvi-vlbi-2.jgipson]
+sender = "John M. Gipson<ivscc@nviinc.com>"
+reply-to = "john.m.gipson@nasa.gov"
+
+[host.gs61av-vlbiprd01.whimwich]
+sender = "ed.himwich@nasa.gov"
+[host.gs61av-vlbidev01.whimwich]
+sender = "ed.himwich@nasa.gov"
+[host.nvi-vlbi-2.whimwich]
+sender = "Ed Himwich <ivscc@nviinc.com>"
+reply-to = "ed.himwich@nasa.gov"
+
+[host.gs61av-vlbiprd01.oper]
+sender = "vlbi-oper@nasa.gov"
+[host.gs61av-vlbidev01.oper]
+sender = "vlbi-oper@nasa.gov"
+[host.nvi-vlbi-2.oper]
+sender = "VLBI oper <ivscc@nviinc.com>"

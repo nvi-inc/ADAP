@@ -1,0 +1,57 @@
+[Application]
+name = "VLBI Communications Center"
+version = "0.1"
+
+[DataBase]
+url = "mysql+pymysql://oper:oper@localhost/voc"
+
+[Email]
+sender = "VCC admin <ivscc@nviinc.com>"
+server = "gmail:/sgpvlbi/projects/vcc/config/ivscc.json"
+
+[Template]
+all = "/sgpvlbi/projects/vcc/config/instructions.txt"
+ns = "/sgpvlbi/projects/vcc/config/instructions-ns.txt"
+
+[Folders]
+schedules = "/sgpvlbi/projects/vcc/data/schedules"
+logs = "/sgpvlbi/projects/vcc/data/logs"
+
+[Messaging]
+credentials = "vcc-admin:vcc-admin"
+host = "localhost"
+port = 5672
+vhost = "VCC"
+exchange = "DATACENTER"
+max_priority = 5
+
+[Admin]
+credentials = "vcc-admin:vcc-admin"
+host = "localhost"
+port = 5672
+vhost = "/"
+exchange = "DATACENTER"
+max_priority = 5
+
+[API]
+credentials = "vcc-admin:vcc-admin"
+protocol = "http"
+url = "127.0.0.1"
+port = 15672
+vhost = "VCC" 
+
+[User]
+vhost = "VCC"
+exchange = "DATACENTER"
+
+[Security]
+folder="/sgpvlbi/projects/vcc/security/"
+secret="secret"
+servers="servers"
+users="users"
+authorized_keys = "/home/vccuser/.ssh/authorized_keys"
+
+[Scanner.Folders]
+aux = "ivsdata/aux"
+control = "ivscontrol"
+format = "ivsformat"

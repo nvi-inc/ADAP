@@ -1,0 +1,21 @@
+[Summary]
+recipients = ["kyla.l.armstrong@nasa.gov","kyla.armstrong@nviinc.com","mario.berube@nviinc.com"]
+sender = "VLBI Database <do-not-reply@nasa.gov>"
+server = "smtp.ndc.nasa.gov"
+
+cmd = "/sgpvlbi/progs/scripts/weekly-summary"
+
+[Weekly]
+recipients = ["john.m.gipson@nasa.gov","john.gipson@nviinc.com","dirk.behrend-1@nasa.gov", "mario.berube@nviinc.com", "sergei.bolotin@nasa.gov"]
+sender = "VLBI oper <do-not-reply@nasa.gov>"
+server = "smtp.ndc.nasa.gov"
+
+cmd = "/sgpvlbi/progs/bin/nvi-report"
+
+[Monthly]
+recipients = ["john.m.gipson@nasa.gov","john.gipson@nviinc.com", "kyla.l.armstrong@nasa.gov","kyla.armstrong@nviinc.com","dirk.behrend-1@nasa.gov","mario.berube@nviinc.com", "sergei.bolotin@nasa.gov"]
+sender = "VLBI oper <do-not-reply@nasa.gov>"
+server = "smtp.ndc.nasa.gov"
+
+cmd = "/sgpvlbi/progs/bin/nvi-report -m"
+

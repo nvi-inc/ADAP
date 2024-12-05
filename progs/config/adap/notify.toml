@@ -1,0 +1,5 @@
+[Notifications]
+recipients = ["mario.berube@nviinc.com"]
+sender = "VLBI watchdog <do-not-reply@nasa.gov>"
+server = "smtp.ndc.nasa.gov"
+

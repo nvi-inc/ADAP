@@ -1,0 +1,13 @@
+[Error]
+do_not_show = ["qk -211"]
+
+[Error.Category]
+antenna = ["an", "st"]
+recorder = ["5b", "5h", "5k", "5m",  "5r", "5t", "m5", "m6"]
+
+[Error.Ignore]
+all = [ "sq", "wx", "qk", "fl", "qo", "ch", "sp"]
+Kk = ["st -820", "st -823", "st -824", "st -825", "st -828", "st -829"]
+Ww = ["sc -8" ]
+Bd = ["st -100"]
+

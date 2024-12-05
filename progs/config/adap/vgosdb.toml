@@ -1,0 +1,39 @@
+[Options]
+save_correlator_report = true
+
+[Agency]
+file = "~/.config/NASA GSFC/vgosDbProcLogs.conf"
+keys = ["Identities", "acshortabbreviatedname"]
+
+[Auto.intensive]
+analyst = "autoINT.js script, NVI inc"
+[Auto.intensive.ADAP]
+cmd = "nuSolve -a auto-int -t autoINT.js {db_name} yes"
+config = "/home/oper/.config/NASA GSFC/nuSolve-auto-int.conf"
+initials = "O2"
+[Auto.intensive.VGET]
+cmd = "nuSolve -a vget-int -t autoINT.js {db_name} yes"
+config = "/home/oper/.config/NASA GSFC/nuSolve-vget-int.conf"
+initials = "O4"
+
+[[nuSolve]]
+name = "vgosDbCalc"
+path = "/sgpvlbi/progs/nusolve/bin/vgosDbCalc"
+processVGOS = true
+
+[[nuSolve]]
+name = "vgosDbProcLogs"
+path = "/sgpvlbi/progs/nusolve/bin/vgosDbProcLogs"
+intensive = "-klog"
+processVGOS = false
+
+[Notifications]
+intensives = ["sergei.bolotin@nasa.gov", "karen.d.baver@nasa.gov", "mario.berube@nviinc.com"]
+intensive = ["sergei.bolotin@nasa.gov", "karen.d.baver@nasa.gov", "mario.berube@nviinc.com"]
+standard = ["sergei.bolotin@nasa.gov", "karen.d.baver@nasa.gov"]
+vgos = ["sergei.bolotin@nasa.gov", "karen.d.baver@nasa.gov"]
+unknown = ["sergei.bolotin@nasa.gov", "karen.d.baver@nasa.gov"]
+problem = ["mario.berube@nviinc.com"]
+sender = "VGOSDB watchdog <do-not-reply@nasa.gov>"
+server = "smtp.ndc.nasa.gov"
+

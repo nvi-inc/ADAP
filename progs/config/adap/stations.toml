@@ -1,0 +1,1439 @@
+[13]
+code = "13"
+order = "0"
+aliases = [ "dss13", "13",]
+host = [ "kbn.mlit.go.jp",]
+
+[14]
+code = "14"
+order = "0"
+aliases = [ "14", "goldmars",]
+host = []
+
+[15]
+code = "15"
+order = "0"
+aliases = [ "dss15", "15",]
+host = []
+
+[26]
+code = "26"
+order = "1"
+aliases = [ "26", "dss26",]
+host = []
+
+[34]
+code = "34"
+order = "0"
+aliases = [ "34", "dss34",]
+host = []
+
+[36]
+code = "36"
+order = "0"
+aliases = [ "dss36", "36",]
+host = []
+
+[43]
+code = "43"
+order = "0"
+aliases = [ "43", "tidbin64", "dss43",]
+host = []
+
+[45]
+code = "45"
+order = "0"
+aliases = [ "45", "dss45",]
+host = []
+
+[56]
+code = "56"
+order = "0"
+aliases = [ "dss56", "56",]
+host = []
+
+[61]
+code = "61"
+order = "0"
+aliases = [ "61", "robled32",]
+host = []
+
+[65]
+code = "65"
+order = "0"
+aliases = [ "65", "dss65",]
+host = []
+
+[6a]
+code = "6a"
+order = "0"
+aliases = [ "dss 65", "6a", "dss65a", "dss65",]
+host = []
+
+[Ag]
+code = "Ag"
+order = "0"
+aliases = [ "ag", "aggo",]
+host = [ "fenix.aggo-conicet.gob.ar", "aggo-conicet.gob.ar", "hp835.mt.asi.it", "fs.wettzell.de", "bkg.bund.de", "webmail.aggo-conicet.gob.ar",]
+
+[Ai]
+code = "Ai"
+order = "0"
+aliases = [ "ai", "aira",]
+host = []
+
+[Ap]
+code = "Ap"
+order = "0"
+aliases = [ "ap", "algopark",]
+host = []
+
+[Ar]
+code = "Ar"
+order = "0"
+aliases = [ "arecibo", "ar",]
+host = []
+
+[As]
+code = "As"
+order = "0"
+aliases = [ "", "as",]
+host = []
+
+[At]
+code = "At"
+order = "0"
+aliases = [ "atca", "at",]
+host = []
+
+[Au]
+code = "Au"
+order = "0"
+aliases = [ "au", "austintx",]
+host = []
+
+[Az]
+code = "Az"
+order = "0"
+aliases = [ "azores", "az",]
+host = []
+
+[Ba]
+code = "Ba"
+order = "0"
+aliases = [ "", "ba",]
+host = []
+
+[Bb]
+code = "Bb"
+order = "0"
+aliases = [ "bb", "blkbutte",]
+host = []
+
+[Bd]
+code = "Bd"
+order = "0"
+aliases = [ "bd", "badary",]
+host = [ "badary.ipa.stbur.ru", "iaaras.ru",]
+
+[Be]
+code = "Be"
+order = "0"
+aliases = [ "be", "bermuda",]
+host = []
+
+[Bl]
+code = "Bl"
+order = "0"
+aliases = [ "", "bl",]
+host = []
+
+[Bo]
+code = "Bo"
+order = "0"
+aliases = [ "bloomind", "bo",]
+host = []
+
+[Br]
+code = "Br"
+order = "0"
+aliases = [ "brvlba", "br",]
+host = []
+
+[Bs]
+code = "Bs"
+order = "0"
+aliases = [ "bs", "brest",]
+host = []
+
+[Bv]
+code = "Bv"
+order = "0"
+aliases = [ "bv", "badrt13v",]
+host = []
+
+[C4]
+code = "C4"
+order = "0"
+aliases = [ "cambridg", "c4",]
+host = []
+
+[Ca]
+code = "Ca"
+order = "0"
+aliases = [ "ca", "cambridg",]
+host = []
+
+[Cb]
+code = "Cb"
+order = "0"
+aliases = [ "cb", "cambridg",]
+host = []
+
+[Cc]
+code = "Cc"
+order = "0"
+aliases = [ "cc", "chichi10", "chichi",]
+host = []
+
+[Cd]
+code = "Cd"
+order = "0"
+aliases = [ "cd", "ceduna",]
+host = []
+
+[Ce]
+code = "Ce"
+order = "0"
+aliases = [ "ce", "cebrer26",]
+host = []
+
+[Cg]
+code = "Cg"
+order = "0"
+aliases = [ "carrolga", "cg",]
+host = []
+
+[Ch]
+code = "Ch"
+order = "0"
+aliases = [ "ch", "chlboltn",]
+host = []
+
+[Cn]
+code = "Cn"
+order = "0"
+aliases = [ "carnusty", "cn",]
+host = []
+
+[Da]
+code = "Da"
+order = "0"
+aliases = [ "daito", "da",]
+host = []
+
+[Dm]
+code = "Dm"
+order = "0"
+aliases = [ "dm", "deadmanl",]
+host = []
+
+[Dw]
+code = "Dw"
+order = "0"
+aliases = [ "westbrk0", "dw",]
+host = []
+
+[Eb]
+code = "Eb"
+order = "0"
+aliases = [ "eb", "effelsberg", "eflsberg",]
+host = [ "mpifr-bonn.mpg.de",]
+
+[Ef]
+code = "Ef"
+order = "0"
+aliases = [ "eflsberg", "ef",]
+host = []
+
+[El]
+code = "El"
+order = "0"
+aliases = [ "el", "ely",]
+host = []
+
+[Ev]
+code = "Ev"
+order = "0"
+aliases = [ "", "ev",]
+host = []
+
+[Fd]
+code = "Fd"
+order = "0"
+aliases = [ "fdvlba", "fd",]
+host = []
+
+[Fl]
+code = "Fl"
+order = "0"
+aliases = [ "fl", "flagstaf",]
+host = []
+
+[Fo]
+code = "Fo"
+order = "0"
+aliases = [ "fo", "fortord",]
+host = []
+
+[Fr]
+code = "Fr"
+order = "0"
+aliases = [ "fr", "raegflor",]
+host = []
+
+[Fs]
+code = "Fs"
+order = "0"
+aliases = [ "fortords", "fs",]
+host = []
+
+[Ft]
+code = "Ft"
+order = "0"
+aliases = [ "fortleza", "fortaleza", "ft",]
+host = [ "flz-vlbi.roen.inpe.br", "roen.inpe.br", "inpe.br",]
+
+[G1]
+code = "G1"
+order = "0"
+aliases = [ "g1",]
+host = []
+
+[G3]
+code = "G3"
+order = "0"
+aliases = [ "nrao853", "g3",]
+host = []
+
+[Ga]
+code = "Ga"
+order = "0"
+aliases = [ "ga", "vlba853",]
+host = []
+
+[Gb]
+code = "Gb"
+order = "0"
+aliases = [ "nrao140", "gb",]
+host = []
+
+[Gc]
+code = "Gc"
+order = "0"
+aliases = [ "gc", "gilcreek",]
+host = []
+
+[Gd]
+code = "Gd"
+order = "0"
+aliases = [ "wide853", "gd",]
+host = []
+
+[Gf]
+code = "Gf"
+order = "0"
+aliases = [ "gorf7102", "gf",]
+host = []
+
+[Gg]
+code = "Gg"
+order = "0"
+aliases = [ "orion5m", "gg",]
+host = []
+
+[Gi]
+code = "Gi"
+order = "0"
+aliases = [ "gi",]
+host = []
+
+[Gm]
+code = "Gm"
+order = "0"
+aliases = [ "", "gm",]
+host = []
+
+[Gn]
+code = "Gn"
+order = "0"
+aliases = [ "nrao20", "gn",]
+host = []
+
+[Go]
+code = "Go"
+order = "0"
+aliases = [ "go", "",]
+host = []
+
+[Gr]
+code = "Gr"
+order = "0"
+aliases = [ "gr", "grasse",]
+host = []
+
+[Gs]
+code = "Gs"
+order = "0"
+aliases = [ "gs", "ggao",]
+host = [ "vlbi-testa.maxgigapop.net", "peraton.com", "monkey.haystack.mit.edu", "haystack.mit.edu", "harris.com",]
+
+[Gt]
+code = "Gt"
+order = "0"
+aliases = [ "gt", "gbtvlba",]
+host = []
+
+[Gu]
+code = "Gu"
+order = "0"
+aliases = [ "gu",]
+host = []
+
+[Gv]
+code = "Gv"
+order = "0"
+aliases = [ "gv", "goldvenu",]
+host = []
+
+[Gz]
+code = "Gz"
+order = "0"
+aliases = [ "", "gz",]
+host = []
+
+[H7]
+code = "H7"
+order = "0"
+aliases = [ "h7", "ftd7900",]
+host = []
+
+[Hb]
+code = "Hb"
+order = "0"
+aliases = [ "hobart12", "hb", "hobart 12",]
+host = [ "smtp-node1.its.utas.edu.au", "utas.edu.au", "smtp-node2.its.utas.edu.au", "utas.ad.internal",]
+
+[Hc]
+code = "Hc"
+order = "0"
+aliases = [ "hc", "hatcreek",]
+host = []
+
+[Hf]
+code = "Hf"
+order = "0"
+aliases = [ "hf", "hofn",]
+host = []
+
+[Hg]
+code = "Hg"
+order = "0"
+aliases = [ "hohenfrg", "hg",]
+host = []
+
+[Hh]
+code = "Hh"
+order = "0"
+aliases = [ "hartrao", "hh",]
+host = [ "phlye.hartrao.ac.za", "email.android.com", "mail.hartrao.ac.za",]
+
+[Hk]
+code = "Hk"
+order = "0"
+aliases = [ "haleakal", "hk",]
+host = []
+
+[Hn]
+code = "Hn"
+order = "0"
+aliases = [ "hn", "hnvlba",]
+host = []
+
+[Ho]
+code = "Ho"
+order = "1"
+aliases = [ "ho", "hobart", "hobart26", "hobart 26",]
+host = [ "smtp-node2.its.utas.edu.au", "utas.edu.au", "smtp-node1.its.utas.edu.au",]
+
+[Hp]
+code = "Hp"
+order = "0"
+aliases = [ "hohnberg", "hp",]
+host = []
+
+[Hr]
+code = "Hr"
+order = "0"
+aliases = [ "hras085", "hr",]
+host = []
+
+[Hs]
+code = "Hs"
+order = "0"
+aliases = [ "hs", "haystack",]
+host = []
+
+[Ht]
+code = "Ht"
+order = "0"
+aliases = [ "ht", "hart15m", "hart15",]
+host = [ "mydge.hartrao.ac.za", "mail.hartrao.ac.za",]
+
+[Ir]
+code = "Ir"
+order = "0"
+aliases = [ "irbene", "ir",]
+host = []
+
+[Is]
+code = "Is"
+order = "0"
+aliases = [ "ishioka", "is",]
+host = [ "mlit.go.jp", "vlb099.mpifr-bonn.mpg.de", "kbn.mlit.go.jp", "spacegeodesy.go.jp",]
+
+[It]
+code = "It"
+order = "0"
+aliases = [ "itapetga", "it",]
+host = []
+
+[J1]
+code = "J1"
+order = "0"
+aliases = [ "j1", "jplmv1",]
+host = []
+
+[Jb]
+code = "Jb"
+order = "0"
+aliases = [ "jodrell2", "jb",]
+host = []
+
+[Jv]
+code = "Jv"
+order = "0"
+aliases = [ "jodrell2", "jv",]
+host = []
+
+[K1]
+code = "K1"
+order = "0"
+aliases = [ "kashim11", "kashima11", "k1", "kashima 11",]
+host = [ "nict.go.jp", "mpifr-bonn.mpg.de",]
+
+[K2]
+code = "K2"
+order = "0"
+aliases = [ "k2", "kokee12m", "kpgo", "kokee 12", "kokee 12m",]
+host = [ "backend-pc.kpgo.uofh.edu", "gsvvkgo-fs-01", "fs1-12m", "franklin.haystack.mit.edu", "harris.com",]
+
+[K3]
+code = "K3"
+order = "0"
+aliases = [ "k3",]
+host = []
+
+[Ka]
+code = "Ka"
+order = "0"
+aliases = [ "ka",]
+host = []
+
+[Kb]
+code = "Kb"
+order = "1"
+aliases = [ "kashima34", "kashi", "kb", "kashima 34", "kashim34",]
+host = [ "nict.go.jp",]
+
+[Ke]
+code = "Ke"
+order = "0"
+aliases = [ "ke", "kath12m", "katherine",]
+host = [ "smtp-node2.its.utas.edu.au", "utas.edu.au", "smtp-node1.its.utas.edu.au",]
+
+[Kg]
+code = "Kg"
+order = "0"
+aliases = [ "koganei", "kg",]
+host = [ "nict.go.jp", "mpifr-bonn.mpg.de",]
+
+[Ki]
+code = "Ki"
+order = "0"
+aliases = [ "ki", "kirsberg",]
+host = []
+
+[Kk]
+code = "Kk"
+order = "1"
+aliases = [ "kk", "kpgo 20m", "kokee",]
+host = [ "fs1-20m", "gsvvkgo-fs20-01", "peraton.com", "s2.kpgo.hawaii.edu", "harris.com",]
+
+[Kl]
+code = "Kl"
+order = "0"
+aliases = [ "", "kl",]
+host = []
+
+[Km]
+code = "Km"
+order = "0"
+aliases = [ "kunming", "km",]
+host = []
+
+[Kn]
+code = "Kn"
+order = "0"
+aliases = [ "", "kn",]
+host = []
+
+[Ko]
+code = "Ko"
+order = "0"
+aliases = [ "ko", "kodiak",]
+host = []
+
+[Kp]
+code = "Kp"
+order = "0"
+aliases = [ "kp", "kpvlba",]
+host = []
+
+[Kr]
+code = "Kr"
+order = "0"
+aliases = [ "karlburg", "kr",]
+host = []
+
+[Ks]
+code = "Ks"
+order = "0"
+aliases = [ "", "ks",]
+host = []
+
+[Kt]
+code = "Kt"
+order = "0"
+aliases = [ "kittpeak", "kt",]
+host = []
+
+[Ku]
+code = "Ku"
+order = "0"
+aliases = [ "kauai", "ku",]
+host = []
+
+[Kv]
+code = "Kv"
+order = "0"
+aliases = [ "sejong", "kv",]
+host = [ "vlb099.mpifr-bonn.mpg.de", "vlb102.mpifr-bonn.mpg.de", "lpetrov.net",]
+
+[Kw]
+code = "Kw"
+order = "0"
+aliases = [ "kwajal26", "kw",]
+host = []
+
+[Ky]
+code = "Ky"
+order = "0"
+aliases = [ "ky", "kainan",]
+host = []
+
+[Kz]
+code = "Kz"
+order = "0"
+aliases = [ "kz",]
+host = []
+
+[La]
+code = "La"
+order = "0"
+aliases = [ "lavlba", "la",]
+host = []
+
+[Le]
+code = "Le"
+order = "0"
+aliases = [ "le", "leonrdok",]
+host = []
+
+[M2]
+code = "M2"
+order = "0"
+aliases = [ "m2", "mv2onsla",]
+host = []
+
+[Ma]
+code = "Ma"
+order = "0"
+aliases = [ "matera", "ma",]
+host = [ "local", "hp835.mt.asi.it", "vlbidell.mt.asi.it", "fs.wettzell.de", "ittrowmx00001", "ittrowmx00002",]
+
+[Mc]
+code = "Mc"
+order = "0"
+aliases = [ "mc", "medicina",]
+host = [ "pcfs64", "ira.inaf.it", "pcfs.med.ira.inaf.it",]
+
+[Md]
+code = "Md"
+order = "0"
+aliases = [ "marpoint", "md",]
+host = []
+
+[Me]
+code = "Me"
+order = "0"
+aliases = [ "me", "monpeak",]
+host = []
+
+[Mg]
+code = "Mg"
+order = "0"
+aliases = [ "mcdon12m", "mg", "mgo",]
+host = [ "utexas.edu", "gsvvmgo-fs-01",]
+
+[Mh]
+code = "Mh"
+order = "0"
+aliases = [ "metsahov", "metshovi", "mh", "metsahovi",]
+host = [ "nls.fi", "maanmittauslaitos.fi",]
+
+[Mi]
+code = "Mi"
+order = "0"
+aliases = [ "miami20", "mi",]
+host = []
+
+[Mk]
+code = "Mk"
+order = "0"
+aliases = [ "mk", "mkvlba",]
+host = []
+
+[Ml]
+code = "Ml"
+order = "0"
+aliases = [ "mammothl", "ml",]
+host = []
+
+[Mm]
+code = "Mm"
+order = "0"
+aliases = [ "", "mm",]
+host = []
+
+[Mn]
+code = "Mn"
+order = "0"
+aliases = [ "mn", "miznao10",]
+host = []
+
+[Mo]
+code = "Mo"
+order = "0"
+aliases = [ "mo", "mojave12",]
+host = []
+
+[Mp]
+code = "Mp"
+order = "0"
+aliases = [ "mopra", "mp",]
+host = []
+
+[Mq]
+code = "Mq"
+order = "0"
+aliases = [ "mq", "moj7288",]
+host = []
+
+[Mr]
+code = "Mr"
+order = "0"
+aliases = [ "mr", "marcus",]
+host = []
+
+[Ms]
+code = "Ms"
+order = "0"
+aliases = [ "ms", "milesmon",]
+host = []
+
+[Mt]
+code = "Mt"
+order = "0"
+aliases = [ "mcd7850", "mt",]
+host = []
+
+[Mu]
+code = "Mu"
+order = "0"
+aliases = [ "miura", "mu",]
+host = []
+
+[Mv]
+code = "Mv"
+order = "0"
+aliases = [ "metshovi", "mv",]
+host = []
+
+[My]
+code = "My"
+order = "0"
+aliases = [ "my", "miyazaki",]
+host = []
+
+[Mz]
+code = "Mz"
+order = "0"
+aliases = [ "mizusgsi", "mz",]
+host = []
+
+[N6]
+code = "N6"
+order = "0"
+aliases = [ "nobey6m", "n6",]
+host = []
+
+[Nb]
+code = "Nb"
+order = "0"
+aliases = [ "", "nb",]
+host = []
+
+[Nl]
+code = "Nl"
+order = "0"
+aliases = [ "nl", "nlvlbi", "nlvlba",]
+host = []
+
+[Nm]
+code = "Nm"
+order = "0"
+aliases = [ "nome", "nm",]
+host = []
+
+[No]
+code = "No"
+order = "0"
+aliases = [ "nobeya45", "no",]
+host = []
+
+[Ns]
+code = "Ns"
+order = "0"
+aliases = [ "nyalesund13s", "nyalesund 13s", "nyalesund 13m ns", "ns", "nyale13s",]
+host = [ "fsns",]
+
+[Nt]
+code = "Nt"
+order = "0"
+aliases = [ "nt", "noto",]
+host = [ "fs-nt.noto.ira.inaf.it", "ira.inaf.it",]
+
+[Nx]
+code = "Nx"
+order = "0"
+aliases = [ "nx", "notox",]
+host = []
+
+[Ny]
+code = "Ny"
+order = "1"
+aliases = [ "nyales20", "nyalesund", "ny",]
+host = [ "skrivdf18.statkart.no", "statkart.no", "mycroft.localdomain", "mpifr-bonn.mpg.de", "fsns", "kartverket.no", "wsburtor1", "fieldsys.statkart.no",]
+
+[O8]
+code = "O8"
+order = "0"
+aliases = [ "o8", "onsala85",]
+host = []
+
+[Oc]
+code = "Oc"
+order = "0"
+aliases = [ "ocotillo", "oc",]
+host = []
+
+[Oe]
+code = "Oe"
+order = "0"
+aliases = [ "onsa13ne", "oe",]
+host = [ "chalmers.se",]
+
+[Oh]
+code = "Oh"
+order = "0"
+aliases = [ "oh", "ohiggins",]
+host = [ "bkg.bund.de", "fsv24.bkg", "lsv819.bkg", "fs.wettzell.de",]
+
+[Om]
+code = "Om"
+order = "0"
+aliases = [ "", "om",]
+host = []
+
+[On]
+code = "On"
+order = "1"
+aliases = [ "onsala60", "on", "onsala",]
+host = [ "mpifr-bonn.mpg.de", "kbn.mlit.go.jp", "roen.inpe.br", "chalmers.se", "fs.wettzell.de",]
+
+[Oo]
+code = "Oo"
+order = "0"
+aliases = [ "oo", "ovro130",]
+host = []
+
+[Or]
+code = "Or"
+order = "0"
+aliases = [ "or", "ovr7853",]
+host = []
+
+[Ov]
+code = "Ov"
+order = "0"
+aliases = [ "ov", "ovvlba",]
+host = []
+
+[Ow]
+code = "Ow"
+order = "0"
+aliases = [ "ow", "onsa13sw",]
+host = [ "chalmers.se",]
+
+[Pa]
+code = "Pa"
+order = "0"
+aliases = [ "parkes", "pa",]
+host = [ "fcvgmre.ngas.PFVEB.NH", "ulqen.ngas.PFVEB.NH",]
+
+[Pb]
+code = "Pb"
+order = "0"
+aliases = [ "pb", "pblossom",]
+host = []
+
+[Pe]
+code = "Pe"
+order = "0"
+aliases = [ "pe", "pentcton",]
+host = []
+
+[Pf]
+code = "Pf"
+order = "0"
+aliases = [ "presidio", "pf",]
+host = []
+
+[Pl]
+code = "Pl"
+order = "0"
+aliases = [ "pl", "plattvil",]
+host = []
+
+[Pn]
+code = "Pn"
+order = "0"
+aliases = [ "pn", "pinflats",]
+host = []
+
+[Pr]
+code = "Pr"
+order = "0"
+aliases = [ "pr", "ptreyes",]
+host = []
+
+[Pt]
+code = "Pt"
+order = "0"
+aliases = [ "pt", "pietown",]
+host = []
+
+[Pv]
+code = "Pv"
+order = "0"
+aliases = [ "pv", "pverdes",]
+host = []
+
+[Qb]
+code = "Qb"
+order = "0"
+aliases = [ "qb", "quabbin",]
+host = []
+
+[Qu]
+code = "Qu"
+order = "0"
+aliases = [ "qu", "quincy",]
+host = []
+
+[Ri]
+code = "Ri"
+order = "0"
+aliases = [ "richmond", "ri",]
+host = []
+
+[Ro]
+code = "Ro"
+order = "0"
+aliases = [ "ro", "madrid64",]
+host = []
+
+[Rz]
+code = "Rz"
+order = "0"
+aliases = [ "", "rz",]
+host = []
+
+[S1]
+code = "S1"
+order = "0"
+aliases = [ "seattle1", "s1",]
+host = []
+
+[S3]
+code = "S3"
+order = "0"
+aliases = [ "sintotu3", "sintotu", "s3",]
+host = []
+
+[S6]
+code = "S6"
+order = "0"
+aliases = [ "s6",]
+host = []
+
+[Sa]
+code = "Sa"
+order = "0"
+aliases = [ "sa", "maria", "raegsmar",]
+host = [ "vlbi.raege.net", "a-raege-az.pt",]
+
+[Sb]
+code = "Sb"
+order = "0"
+aliases = [ "sb", "ctva",]
+host = []
+
+[Sc]
+code = "Sc"
+order = "0"
+aliases = [ "scvlba", "sc",]
+host = []
+
+[Se]
+code = "Se"
+order = "0"
+aliases = [ "se", "sest",]
+host = []
+
+[Sg]
+code = "Sg"
+order = "0"
+aliases = [ "sg", "shanghai",]
+host = []
+
+[Sh]
+code = "Sh"
+order = "0"
+aliases = [ "seshan25", "shenshan", "sh", "sheshan",]
+host = [ "shao.ac.cn",]
+
+[Si]
+code = "Si"
+order = "0"
+aliases = [ "si", "sintotu",]
+host = []
+
+[Sj]
+code = "Sj"
+order = "0"
+aliases = [ "sagara", "sj",]
+host = []
+
+[Sm]
+code = "Sm"
+order = "0"
+aliases = [ "sm", "crimea",]
+host = [ "volvach", "webmail.meta.ua",]
+
+[Sn]
+code = "Sn"
+order = "0"
+aliases = [ "sn", "sndpoint",]
+host = []
+
+[So]
+code = "So"
+order = "0"
+aliases = [ "sourdogh", "so",]
+host = []
+
+[Sp]
+code = "Sp"
+order = "0"
+aliases = [ "sp", "sanpaula",]
+host = []
+
+[Ss]
+code = "Ss"
+order = "0"
+aliases = [ "ss",]
+host = []
+
+[St]
+code = "St"
+order = "0"
+aliases = [ "st", "santia12",]
+host = []
+
+[Su]
+code = "Su"
+order = "0"
+aliases = [ "su",]
+host = []
+
+[Sv]
+code = "Sv"
+order = "0"
+aliases = [ "sv", "svetloe",]
+host = [ "iaaras.ru", "osvtl.spb.ru",]
+
+[Sw]
+code = "Sw"
+order = "1"
+aliases = [ "sw", "svert13v",]
+host = []
+
+[Sy]
+code = "Sy"
+order = "0"
+aliases = [ "syowa", "sy",]
+host = [ "eis.hokudai.ac.jp", "nipr.ac.jp",]
+
+[T1]
+code = "T1"
+order = "0"
+aliases = [ "t1",]
+host = []
+
+[T3]
+code = "T3"
+order = "0"
+aliases = [ "t3",]
+host = []
+
+[T6]
+code = "T6"
+order = "0"
+aliases = [ "t6", "tianma65", "tm", "tian",]
+host = [ "shao.ac.cn",]
+
+[Ta]
+code = "Ta"
+order = "0"
+aliases = [ "ta", "tateyama",]
+host = []
+
+[Tc]
+code = "Tc"
+order = "0"
+aliases = [ "tigoconc", "tigo", "tc",]
+host = []
+
+[Te]
+code = "Te"
+order = "0"
+aliases = [ "te", "raegtnfe",]
+host = []
+
+[Tg]
+code = "Tg"
+order = "0"
+aliases = [ "tigowtzl", "tg",]
+host = []
+
+[Ti]
+code = "Ti"
+order = "0"
+aliases = [ "tidbin", "ti", "tidbin64",]
+host = []
+
+[Tj]
+code = "Tj"
+order = "0"
+aliases = [ "tj", "titijima",]
+host = []
+
+[Tk]
+code = "Tk"
+order = "0"
+aliases = [ "tk", "tsukuba",]
+host = []
+
+[Tl]
+code = "Tl"
+order = "0"
+aliases = [ "tl", "aries4m",]
+host = []
+
+[Tm]
+code = "Tm"
+order = "0"
+aliases = [ "tm",]
+host = []
+
+[Tn]
+code = "Tn"
+order = "0"
+aliases = [ "tromsono", "tn",]
+host = []
+
+[To]
+code = "To"
+order = "0"
+aliases = [ "to", "toulouse",]
+host = []
+
+[Tr]
+code = "Tr"
+order = "0"
+aliases = [ "tr", "torun",]
+host = []
+
+[Ts]
+code = "Ts"
+order = "0"
+aliases = [ "ts", "tsukuba32", "tsukuba", "tsukub32",]
+host = [ "spacegeodesy.go.jp", "kbn.mlit.go.jp",]
+
+[Uc]
+code = "Uc"
+order = "0"
+aliases = [ "uchinour", "uc",]
+host = []
+
+[Ud]
+code = "Ud"
+order = "0"
+aliases = [ "ud", "usuda", "usuda64",]
+host = []
+
+[Ur]
+code = "Ur"
+order = "0"
+aliases = [ "ur", "urumqi",]
+host = [ "volvach", "chalmers.se",]
+
+[Us]
+code = "Us"
+order = "0"
+aliases = [ "ussurisk", "us",]
+host = []
+
+[Uu]
+code = "Uu"
+order = "0"
+aliases = [ "", "uu",]
+host = []
+
+[Uz]
+code = "Uz"
+order = "0"
+aliases = [ "", "uz",]
+host = []
+
+[Va]
+code = "Va"
+order = "9"
+aliases = [ "vlba", "va",]
+host = []
+
+[Vb]
+code = "Vb"
+order = "0"
+aliases = [ "vb", "vndnberg",]
+host = []
+
+[Ve]
+code = "Ve"
+order = "0"
+aliases = [ "vernal", "ve",]
+host = []
+
+[Vi]
+code = "Vi"
+order = "0"
+aliases = [ "victoria", "vi",]
+host = []
+
+[Vm]
+code = "Vm"
+order = "0"
+aliases = [ "veramzsw", "vera", "vm", "veramizusawa",]
+host = [ "nao.ac.jp",]
+
+[Vo]
+code = "Vo"
+order = "0"
+aliases = [ "vo", "veraogsw",]
+host = []
+
+[Vr]
+code = "Vr"
+order = "0"
+aliases = [ "verairik", "vr",]
+host = []
+
+[Vs]
+code = "Vs"
+order = "0"
+aliases = [ "vs", "veraisgk",]
+host = []
+
+[Wa]
+code = "Wa"
+order = "0"
+aliases = [ "wark30m", "wa", "wark30",]
+host = [ "Dempsey.autuni.aut.ac.nz",]
+
+[Wb]
+code = "Wb"
+order = "0"
+aliases = [ "wb", "wstrbork",]
+host = []
+
+[Wf]
+code = "Wf"
+order = "0"
+aliases = [ "westford", "wf",]
+host = [ "wfmark5-19.haystack.mit.edu", "chalmers.se", "mit.edu", "oc11expo15.exchange.mit.edu", "haystack.mit.edu", "wf-backend-PC", "oc11expo30.exchange.mit.edu", "thumper3.haystack.mit.edu",]
+
+[Wh]
+code = "Wh"
+order = "0"
+aliases = [ "", "wh",]
+host = []
+
+[Wn]
+code = "Wn"
+order = "0"
+aliases = [ "wettzell13n", "wettzellwn", "wettzell north", "wettzell wn", "wn", "wettzell 13n", "wettz13n",]
+host = [ "bkg.bund.de", "fs.wettzell.de",]
+
+[Ws]
+code = "Ws"
+order = "0"
+aliases = [ "ws", "wettzell13s", "wettzell", "wettz13s", "wettzellws", "wettzell south", "wettzell 13s", "wettzell ws",]
+host = [ "tum.de", "bkg.bund.de", "fs.wettzell.de",]
+
+[Wt]
+code = "Wt"
+order = "0"
+aliases = [ "whthorse", "wt",]
+host = []
+
+[Ww]
+code = "Ww"
+order = "1"
+aliases = [ "wark", "ww12m", "wark12", "wark12m", "ww",]
+host = [ "klitschko.autuni.aut.ac.nz", "Dempsey.autuni.aut.ac.nz",]
+
+[Wz]
+code = "Wz"
+order = "1"
+aliases = [ "wettzell wz", "wettzell", "wz", "wettzellwz",]
+host = [ "bkg.bund.de", "aoc.nrao.edu", "spica.telekom.de", "fs.wettzell.de",]
+
+[Y1]
+code = "Y1"
+order = "0"
+aliases = [ "y1", "vla",]
+host = []
+
+[Y2]
+code = "Y2"
+order = "0"
+aliases = [ "y2", "vlan8",]
+host = []
+
+[Ya]
+code = "Ya"
+order = "0"
+aliases = [ "ya", "yakataga",]
+host = []
+
+[Yb]
+code = "Yb"
+order = "0"
+aliases = [ "yb", "yebesold",]
+host = []
+
+[Ye]
+code = "Ye"
+order = "0"
+aliases = [ "yellowkn", "ye",]
+host = []
+
+[Yg]
+code = "Yg"
+order = "0"
+aliases = [ "yarragadee", "yarra12m", "yg",]
+host = [ "smtp-node1.its.utas.edu.au", "utas.edu.au", "smtp-node2.its.utas.edu.au",]
+
+[Yj]
+code = "Yj"
+order = "0"
+aliases = [ "yebes13", "yj", "raegyeb",]
+host = [ "fsraege.oan.es", "satellite02.sim.rediris.es", "oan.es", "satellite01.sim.rediris.es", "hercules.oan.es", "fsvgos",]
+
+[Yk]
+code = "Yk"
+order = "0"
+aliases = [ "aries9m", "yk",]
+host = []
+
+[Ym]
+code = "Ym"
+order = "0"
+aliases = [ "ym", "yamaguch",]
+host = []
+
+[Ys]
+code = "Ys"
+order = "1"
+aliases = [ "yebes", "yebes40m", "ys", "yebes40",]
+host = [ "fs40m.oan.es", "oan.es",]
+
+[Yu]
+code = "Yu"
+order = "0"
+aliases = [ "yu", "yuma",]
+host = []
+
+[Zc]
+code = "Zc"
+order = "0"
+aliases = [ "zelenchk", "zelenchukskaya", "zc",]
+host = [ "iaaras.ru", "ipa.nw.ru", "carina.ipa.rssi.ru",]
+
+[Zv]
+code = "Zv"
+order = "0"
+aliases = [ "zv", "zelrt13v",]
+host = []

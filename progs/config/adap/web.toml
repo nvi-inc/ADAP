@@ -1,0 +1,14 @@
+[WebService]
+url= "http://127.0.0.1:8000"
+wd_page = "https://ivscc.gsfc.nasa.gov/sessions/index.html"
+database = "/sgpvlbi/progs/web/ivs-sessions/db.sqlite3"
+datacenter = "cddis"
+warnings = "/sgpvlbi/progs/log/adap/problems/web.toml"
+
+[ESDWebDev]
+host = "esdwebdev.gsfc.nasa.gov"
+user = "ivscc-svc"
+root = "ivscc-prod"
+session_page = "https://ivscc.gsfc.nasa.gov/sessions/index.html"
+warnings = "/sgpvlbi/progs/log/adap/problems/web_page.toml"
+

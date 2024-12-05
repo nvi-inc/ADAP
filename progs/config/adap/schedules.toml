@@ -1,0 +1,26 @@
+[Mail]
+server = "gmail:/sgpvlbi/progs/config/adap/ivscc.json"
+
+[IVSCC]
+credentials = "ivscc-mail"
+sender = "IVS Coordinating Center <ivscc@nviinc.com>"
+reply-to = "Cynthia Thomas<cynthia.c.thomas@nasa.gov>"
+contact = "Cynthia Thomas<cynthia.c.thomas@nasa.gov>"
+_watchdog = ["Cynthia Thomas<cynthia.c.thomas@nasa.gov>"]
+watchdog = ["Mario Berube<mario.berube@nasa.gov>"]
+url = "https://ivscc.gsfc.nasa.gov/sessions/"
+
+[OpsCenters]
+DACH = ["oc.dach@bkg.bund.de"]
+NASA = ["cynthia.thomas@nviinc.com", "cynthia.c.thomas@nasa.gov", "karen.d.baver@nasa.gov", "leonid.petrov-1@nasa.gov"]
+HAYS = ["aburns6@mit.edu"]
+USNO = ["merri.s.carter.civ@us.navy.mil", "merrisue64@gmail.com", "sara.e.hardin.civ@us.navy.mil"]
+VIEN = ["Johannes.Boehm@geo.tuwien.ac.at", "mschartner@ethz.ch"]
+ETHZ = ["mschartner@ethz.ch", "Johannes.Boehm@geo.tuwien.ac.at"]
+SHAO = ["sfc@shao.ac.cn"]
+GOW  = ["christian.ploetz@bkg.bund.de"]
+GSI  = ["matsumoto-s96n2@mlit.go.jp", "ueshiba-h96qp@mlit.go.jp", "nakakuki-t96nm@mlit.go.jp", "nozawa-k96xd@mlit.go.jp"]
+UTAS = ["auscope-operations@list.utas.edu.au"]
+GFZ  = ["anderson@gfz-potsdam.de"]
+TEST = ["Mario Berube<mario.berube@nasa.gov>", "Mario Berube<mario.berube@nviinc.com>"]
+OSO  = ["Karine le Bail <karine.lebail@chalmers.se>"]

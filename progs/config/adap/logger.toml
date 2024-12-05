@@ -1,0 +1,34 @@
+# Logger configuration information
+version = 1
+disable_existing_loggers = false
+
+# Custom levels
+[levels]
+START = 21
+STOP = 22
+BEGIN = 23
+END = 24
+SEVERE = 41
+
+# Output format
+[formatters.default]
+format = "%(time)s %(levelname)-8s %(app)-8s %(pid)-8s %(server)-10s - %(message)s"
+
+# Handlers
+[handlers.console]
+level = "INFO"
+class = "logging.StreamHandler"
+formatter = "default"
+stream = "ext://sys.stdout"
+
+[handlers.file]
+level = "DEBUG"
+class = "logging.handlers.RotatingFileHandler"
+formatter = "default"
+filename = "/sgpvlbi/progs/logs/adap/current.log"
+maxBytes = 2097152
+backupCount = 1
+
+[loggers.default]
+level = "DEBUG"
+handlers = [ "file"]

@@ -1,0 +1,5 @@
+recipients = ["derek.l.hudson@nasa.gov", "mario.berube@nviinc.com", "ganesanr@mit.edu"]
+sender = "VLBI watchdog <do-not-reply@nasa.gov>"
+reply = "mario.berube@nviinc.com"
+server = "smtp.ndc.nasa.gov"
+

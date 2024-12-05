@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+source /sgpvlbi/progs/adap_v2/scripts/setup
+
+python $APP_DIR/src/sherlog -c $CONFIG_DIR/vlbi.toml $@ 
+
