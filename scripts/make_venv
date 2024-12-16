@@ -6,4 +6,4 @@ source venv/bin/activate
 # Upgrade pip
 python -m pip install --upgrade pip
 # Install dependencies using pyproject.toml
-python -m pip install pyproject.toml
+python -m pip install .
