@@ -5,57 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d45bb200-62f8-4f7f-b089-cb0df8ef62ad" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/scripts/make_venv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/__main__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/eopm.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/eopm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/eops.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/eops.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/report.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ivsdb/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ivsdb/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ivsdb/fix_code_size.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ivsdb/fix_code_size.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ivsdb/loaders.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ivsdb/loaders.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ivsdb/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ivsdb/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rmq/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rmq/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rmq/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rmq/__main__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rmq/bindings.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rmq/bindings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/schedule/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/schedule/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/__main__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/analyzed.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/analyzed.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/andash-2.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/andash-2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/andash.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/andash.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/aprioris_eop.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/aprioris_eop.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/certificate.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/certificate.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/clean_wrappers.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/clean_wrappers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/eopm.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/eopm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/fix_eop.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/fix_eop.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/ivs-ops.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/ivs-ops.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/kill_apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/kill_apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/load_master.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/load_master.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/mail_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/mail_report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/mailit.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/mailit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/master.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/master.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/need-gmail.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/need-gmail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/nvi-report.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/nvi-report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/nvi-sum.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/nvi-sum.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/sefds.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/sefds.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/toascii.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/toascii.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tools/vgosdb-status.py" beforeDir="false" afterPath="$PROJECT_DIR$/tools/vgosdb-status.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/files.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/gmail.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/gmail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/mail.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/mail.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/servers-old.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/servers-old.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/servers.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/servers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vgosdb/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vgosdb/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vgosdb/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vgosdb/__main__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vgosdb/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vgosdb/controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vgosdb/correlator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vgosdb/correlator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/web/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/web/reset.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/reset.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/web/stats.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/stats.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/web/vgosdb.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/web/vgosdb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adap" beforeDir="false" afterPath="$PROJECT_DIR$/bin/adap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/make" beforeDir="false" afterPath="$PROJECT_DIR$/bin/make" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,11 +39,16 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "master",
+    "last_opened_file_path": "/Users/mario/PycharmProjects/ADAP/scripts",
     "settings.editor.selected.configurable": "preferences.general"
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/scripts" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/bin" />
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>

@@ -72,14 +72,9 @@ def make_version(root, adap):
     print(ans)
     # Move to folder and execute uv to create virtual environment
     os.chdir(folder)
-    cmds = ['python3 -m venv venv', 'source venv/bin/activate', 'python -m pip install --upgrade pip',
-            'python -m pip install pyprojects.toml']
-    ans = execute('; '.join(cmds))
+    # Execute script to create virtual environment
+    ans = execute('scripts/make_venv')
     print(f'[{ans}]')
-    #ans = execute('source venv/bin/activate')
-    #print(ans)
-    #ans = execute('uv add pyproject.toml venv')
-    #print(f'[{ans}]')
 
 
 if __name__ == '__main__':
