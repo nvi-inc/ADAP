@@ -3,6 +3,7 @@ import ssl
 import re
 import time
 import traceback
+import subprocess
 from datetime import datetime, timedelta
 
 from ftplib import FTP_TLS, FTP
@@ -25,6 +26,8 @@ DATACENTER, CORRELATOR, SERVER = ('DataCenter', 'Correlator', 'Server')
 categories = [DATACENTER, CORRELATOR, SERVER, 'Alias']
 last_mod_time = None
 
+scale_bytes = {'KB': float(1024), 'MB': float(1024 * 1024), 'GB': float(1024 * 1024 * 1024)}
+
 
 # HTTPAdapter to lower cypher level so that some https servers could be accessed
 class TLSAdapter(HTTPAdapter):
@@ -44,6 +47,8 @@ class TLSAdapter(HTTPAdapter):
 class FTPserver:
     T0 = pytz.UTC.localize(datetime(1975, 1, 1))  # Time before VLBI but not 0 when computing timestamp
     TIMEfmt = '%a, %d %b %Y %H:%M:%S %Z'
+
+    pattern = re.compile(r'.* (?P<size>\d*) (?P<date>[A-Z][a-z]{2} \d{2} .{5}) (?P<name>.*)').match
 
     # Initial server using configuration
     def __init__(self, configuration):
@@ -137,23 +142,27 @@ class FTPserver:
     # Upload file to ivs center (This is specific to each server)
     def no_upload(self, lst, testing=False):
         self.add_error(f'cannot upload to {self.code}')
-        return 0
+        return []
 
     # List files in directory with their timestamp
     def listdir(self, folder):
         lines = []
         try:
-            self.host.dir(folder, lines.append)
+            self.host.dir(str(folder), lines.append)
         except Exception as err:
             self.add_error(str(err))
 
         files, folders = [], []
         for line in lines:
-            info = line.split()
-            if info[0].startswith('d'):
-                folders.append(info[-1])
+            if match := self.pattern(line):
+                if line[0] == 'd':
+                    folders.append(match['name'])
+                else:
+                    files.append((match['name'], self.decode_ftptime(match['date']), float(match['size'])))
             else:
-                files.append((info[-1], self.decode_ftptime(' '.join(info[-4:-1]))))
+                print(f'BAD [{line}]')
+                exit(0)
+
         return folders, files
 
     # Decode time stamp
@@ -181,8 +190,8 @@ class FTPserver:
     def get_file_info(self, path, nbr_tries=0):
         if not self.is_connected or nbr_tries > 3:
             return False, 0
-        _, files = self.listdir(os.path.dirname(path))
-        timestamp = dict(files).get(os.path.basename(path), 0)
+        files = {file[0]: file[1] for file in self.listdir(os.path.dirname(path))[-1]}
+        timestamp = files.get(os.path.basename(path), 0)
         if timestamp > 0:
             return True, timestamp
         time.sleep(1)
@@ -214,30 +223,52 @@ class FTPserver:
             self.add_error('download {} failed : [{}]'.format(rpath, str(err)))
             return False, self.errors
 
+    # Download file and compute MD5 check sum
+    def transfer(self, rpath, lpath, remote):
+        if not self.is_connected:
+            return False, 'connection closed'
+        try:
+            remote.make_dirs(os.path.dirname(lpath))
+            with remote.sftp.open(lpath, 'wb') as f:
+                md5 = hashlib.md5()
+
+                def process(chunk):
+                    md5.update(chunk)
+                    f.write(chunk)
+
+                self.host.retrbinary(f'RETR {rpath}', process)
+                return True, md5.hexdigest()
+        except Exception as err:
+            self.add_error(f'ftp transfer {rpath} failed : [{str(err)}]')
+            return False, self.errors
+
     # Walk function using lisdir
     def _walk(self, directory):
         sub_dirs, files = self.listdir(directory)
 
-        yield(directory, files)
+        yield directory, files
 
         for subdir in sub_dirs:
             for x in self._walk(os.path.join(directory, subdir)):
                 yield x
 
     # Walk through all directories under top and extract all files with their timestamp
-    def walk(self, top, reject=[]):
+    def walk(self, top, reject=[], need_size=False):
         if self.is_connected:
             for root, files in self._walk(top):
-                for filename, timestamp in files:
+                for filename, timestamp, file_size in files:
                     if filename not in reject:
-                        yield filename, os.path.join(root, filename), timestamp
+                        path = os.path.join(root, filename)
+                        yield (filename, path, timestamp, file_size) if need_size else (filename, path, timestamp)
 
     # Specific upload function for cddis
     def upload_cddis(self, lst, testing=False):
 
         uploader = requests.Session()
-        uploader.mount('https://', TLSAdapter(pool_connections=100, pool_maxsize=100))
-
+        try:
+            uploader.mount('https://', TLSAdapter(pool_connections=100, pool_maxsize=100))
+        except:
+            pass
         # Login to cddis to get cookies and insert in cookie jar
         rsp = uploader.get(self.script + 'login')
         if rsp.status_code != 200 or 'Welcome' not in rsp.text:
@@ -248,7 +279,8 @@ class FTPserver:
             jar.update(r.cookies)
 
         # Form files data
-        files = [('fileType', (None, 'MISC')), ('fileContentType', (None, 'MISC'))] if testing else [('fileType', (None, 'VLBI'))]
+        files = [('fileType', (None, 'MISC')), ('fileContentType', (None, 'MISC'))] if testing \
+            else [('fileType', (None, 'VLBI'))]
         files.extend([('file[]', (os.path.basename(path), open(path, 'rb'))) for path in lst if os.path.exists(path)])
         if len(files) > 1:
             rsp = uploader.post(self.script + 'upload/', cookies=jar, files=files)
@@ -256,6 +288,23 @@ class FTPserver:
 
         return []
 
+    def upload_bkg(self, lst, testing=False):
+        files = [os.path.expanduser(path) for path in lst if os.path.exists(path)]
+        netrc = os.path.join(os.path.expanduser('~'), '.netrc')
+        for path in files:
+            cmd = f'curl --ftp-ssl --netrc-file {netrc} -T {path} {self.protocol}://{self.url}'
+            subprocess.Popen(cmd, stdout=subprocess.PIPE, shell=True).communicate()
+        return [os.path.basename(file) for file in files]
+
+    def upload_opar(self, lst, testing=False):
+        uploaded = []
+        for path in [os.path.expanduser(path) for path in lst if os.path.exists(path)]:
+            name = os.path.basename(path)
+            files = {'fichier': (name, open(path, 'rb')), 'mode': (None, 'upload')}
+            r = requests.post(self.script, files=files)
+            if f'{name} uploaded' in r.text:
+                uploaded.append(name)
+        return uploaded
 
 # Generic class for HTTP and HTTPS server
 class HTTPserver(FTPserver):
@@ -263,18 +312,22 @@ class HTTPserver(FTPserver):
     # Definitions of data centers in control file
     def __init__(self, configuration):
         super().__init__(configuration)
+        self.session = None
         self.url = '{}://{}'.format(configuration.get('protocol', 'https'), configuration.get('url', ''))
         self.jar = requests.cookies.RequestsCookieJar()
         self.first_page = configuration.get('first_page', '')
         self.verify_ssl = configuration.get('verify_ssl', True)
         # Define html parser for this server
-        parser = configuration.get('parser', 'generic_parser')
-        self.parser = getattr(self, parser if hasattr(self, parser) else 'generic_parser')
+        http_parser = configuration.get('parser', 'generic_parser')
+        self.parser = getattr(self, http_parser if hasattr(self, http_parser) else 'generic_parser')
 
     def try2connect(self):
         try:
             self.session = requests.Session()
-            self.session.mount(self.protocol + '://', TLSAdapter(pool_connections=100, pool_maxsize=100))
+            try:
+                self.session.mount(self.protocol + '://', TLSAdapter(pool_connections=100, pool_maxsize=100))
+            except:
+                pass
             self.session.headers = {'UserAgent': 'Mozilla/5.0 (X11; Linux; rv:74.0) Gecko/20100101 Firefox/74.0'}
 
             # Connect to first page in case a login is required
@@ -303,6 +356,10 @@ class HTTPserver(FTPserver):
         # Return timestamp
         return int(time_value.timestamp())
 
+    def decode_file_size(self, row):
+        print(row)
+        return 0
+
     # Generic parser for most of http servers
     def generic_parser(self, content):
         groups = {'[   ]': 'file', '[DIR]': 'dir'}
@@ -313,25 +370,17 @@ class HTTPserver(FTPserver):
             if (img := row.find('img', alt=True)) and (grp := groups.get(img['alt'], None)):
                 name = row.find('a')['href'].strip()
                 if grp == 'file':
-                    files.append((name, self.decode_web_time(row)))
+                    files.append((name, self.decode_web_time(row), 0))
                 elif grp == 'dir':
                     folders.append(name)
         return folders, files
 
-    # Parser specific to SHAO site
-    def shao_parser(self, content):
-        files = []
-        # Get all files
-        is_db = re.compile('^.*\d{2}[A-Z]{3}\d{2}[A-Z]{2}.*$').match
-        for line in BeautifulSoup(content, 'html.parser').text.splitlines():
-            if is_db(line):
-                name, dmy, hm, *_ = line.strip().split()
-                try:
-                    date_value = datetime.strptime(f'{dmy} {hm}', '%d-%b-%Y %H:%M')
-                except:
-                    date_value = self.T0
-                files.append((name, int(date_value.timestamp())))
-        return [], files
+    def earthdata_file_size(self, text):
+        try:
+            return float(text.split()[-1][:-3]) * scale_bytes.get(text[-2:], 0)
+        except Exception as exc:
+            print(text, str(exc))
+            return 0
 
     # Parser specific to EathData https site
     def earthdata_parser(self, content):
@@ -343,9 +392,10 @@ class HTTPserver(FTPserver):
 
         # Get all files
         for item in page.find_all(attrs={'class': 'archiveItemTextContainer'}):
-            name = item.find(attrs={'class': 'archiveItemText'}).get('href').strip()
-            local_time = datetime.strptime(item.find(attrs={'class': 'fileInfo'}).text[0:19], '%Y:%m:%d %H:%M:%S')
-            files.append((name, int(self.tz.localize(local_time).timestamp())))
+            name = item.get('href').strip()
+            text = item.find(attrs={'class': 'fileInfo'}).text
+            local_time = datetime.strptime(text[0:19], '%Y:%m:%d %H:%M:%S')
+            files.append((name, int(self.tz.localize(local_time).timestamp()), self.earthdata_file_size(text)))
         return folders, files
 
     # No parser available
@@ -397,6 +447,26 @@ class HTTPserver(FTPserver):
             self.add_error('download {} failed: [{}]'.format(rpath, str(err)))
             return False, self.errors
 
+    # Download file using request and compute md5 checksum
+    def transfer(self, rpath, lpath, remote):
+        if not self.is_connected:
+            self.add_error(f'{self.code} not connected')
+            return False, self.errors
+        try:
+            md5 = hashlib.md5()
+            with self.session.get(urljoin(self.url, rpath), cookies=self.jar, stream=True) as r:
+                r.raise_for_status()
+                remote.make_dirs(os.path.dirname(lpath))
+                with remote.sftp.open(lpath, 'wb') as f:
+                    for chunk in r.iter_content(chunk_size=8192):
+                        if chunk:  # filter out keep-alive new chunks
+                            md5.update(chunk)
+                            f.write(chunk)
+            return True, md5.hexdigest()
+        except Exception as err:
+            self.add_error(f'http transfer {rpath} failed: [{str(err)}]')
+            return False, self.errors
+
 class CURLftp(HTTPserver):
 
     def __init__(self, configuration):
@@ -444,11 +514,14 @@ class CURLftp(HTTPserver):
         # Decode listing
         folders, files = [], []
         for line in buffer.getvalue().decode('utf-8').splitlines():
-            info = line.split()
-            if info[0].startswith('d'):
-                folders.append(info[-1])
+            if match := self.pattern(line):
+                if line[0] == 'd':
+                    folders.append(match['name'])
+                else:
+                    files.append((match['name'], self.decode_ftptime(match['date']), float(match['size'])))
             else:
-                files.append((info[-1], self.decode_ftptime(' '.join(info[-4:-1]))))
+                print('BAD', line)
+                exit(0)
 
         return folders, files
 
@@ -473,6 +546,32 @@ class CURLftp(HTTPserver):
                 return True, md5.hexdigest()
         except Exception as err:
             self.add_error('download {} failed : [{}]'.format(rpath, str(err)))
+            return False, self.errors
+
+    # Download file and compute MD5 check sum
+    def transfer(self, rpath, lpath, remote):
+        if not self.is_connected:
+            return False, 'connection closed'
+        try:
+            remote.make_dirs(os.path.dirname(lpath))
+            with remote.sftp.open(lpath, 'wb') as f:
+                md5 = hashlib.md5()
+
+                def process(chunk):
+                    md5.update(chunk)
+                    f.write(chunk)
+                    return len(chunk)
+
+                self.host.setopt(pycurl.URL, urljoin(self.url, rpath))
+                self.host.setopt(pycurl.NOBODY, False)
+                self.host.setopt(pycurl.HEADER, False)
+                self.host.setopt(pycurl.WRITEFUNCTION, process)
+                self.host.perform()
+
+                return True, md5.hexdigest()
+        except Exception as err:
+            print(traceback.format_exc())
+            self.add_error(f'transfer {rpath} failed : [{str(err)}]')
             return False, self.errors
 
 
@@ -548,9 +647,9 @@ def load_servers(category=None):
     try:
         mod_time, info = app.load_control_file(name=app.ControlFiles.Servers, lastmod=last_mod_time)
         if info:
-            configurations = {grp: info[grp] for grp in categories}
+            configurations = {grp: info.get(grp, {}) for grp in categories}
             last_mod_time = mod_time
-        return list(configurations[category].keys()) if category in categories else []
+        return list(configurations.get(category, {}).keys()) if category in categories else []
     except Exception as exc:
         return []
 
@@ -560,7 +659,7 @@ def get_centers(category):
     global configurations
     global categories
 
-    return list(configurations[category].keys()) if category in categories else []
+    return list(configurations.get(category, {}).keys()) if category in categories else []
 
 
 # Get configuration of a specific server
@@ -583,6 +682,7 @@ def get_server(category, code):
         return HTTPserver(config) if config['protocol'] in ['http', 'https'] else FTPserver(config)
     except Exception as err:
         return FTPserver({})
+
 
 # Get ftp or http server
 def get_aliases(category, code):

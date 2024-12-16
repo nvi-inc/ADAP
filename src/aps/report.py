@@ -18,6 +18,8 @@ class STDreport:
         if not (sched := get_schedule(self.session)):
             self.extra_comment = [f'{self.session.code} has no schedule file']
         elif sched.session_code.lower() != self.session.code.lower():
+            print(sched)
+            print(sched.session_code, sched.path)
             self.extra_comment = [f'{os.path.basename(sched.path)} has invalid record $EXPER {sched.session_code}']
         if self.extra_comment:
             self.extra_comment.extend(['Therefore the source breakdown at the end of the summary has been deleted.',
@@ -104,7 +106,7 @@ class STDreport:
 
     def write_warnings(self):
         if not self.schedule:
-            self.write('***WARNING:  Schedule file not valid for this spoolfile***', before=1, after=1)
+            self.write('***WARNING:  Schedule file not found for this spoolfile***', before=1, after=1)
             return
 
         # Check if stations in spool file are not in schedule or have been removed

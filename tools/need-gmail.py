@@ -1,11 +1,16 @@
+from datetime import date, timedelta
+
+from googleapiclient.discovery import build
+from httplib2 import Http
 import oauth2client
 from oauth2client import file, tools
-
 
 if __name__ == '__main__':
     import argparse
 
+
     parser = argparse.ArgumentParser( description='Create gmail credential file' )
+
     parser.add_argument('secret')
     parser.add_argument('credential')
     parser.add_argument('scope')
@@ -15,7 +20,7 @@ if __name__ == '__main__':
     print(args.secret)
     print(args.credential)
 
-    SCOPES = f'-.{args.scope}'
+    SCOPES = args.scope
 
     print(SCOPES)
     store = file.Storage(args.credential)

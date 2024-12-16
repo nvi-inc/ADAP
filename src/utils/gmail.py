@@ -1,8 +1,6 @@
-from datetime import date, timedelta
-
 from googleapiclient.discovery import build
 from httplib2 import Http
-from oauth2client import file, client, tools
+from oauth2client import file
 import base64
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -13,9 +11,9 @@ class Gmail:
 
     def __init__(self, credentials):
         creds = file.Storage(credentials).get()
-        self.service = build('gmail', 'v1', http=creds.authorize(Http())) if creds else None
+        self.service = build('gmail', 'v1', http=creds.authorize(Http()), cache_discovery=False) if creds else None
         if self.service:
-            labels = self.service.users().labels().list(userId='me').execute().get('labels', [])
+            labels = self.service.users().labels().list(userId='me').get('labels', [])
             self.labels = {label['name']: label['id'] for label in labels}
 
     def __enter__(self):
@@ -100,7 +98,7 @@ class Gmail:
 
     # Get label list:
     def get_labels(self):
-        labels = self.service.users().labels().list(userId='me').execute().get('labels', [])
+        labels = self.service.users().labels().list(userId='me').get('labels', [])
         self.labels = {label['name']: label['id'] for label in labels}
         print(self.labels)
 
@@ -120,7 +118,7 @@ class Gmail:
 
     # Get a message using its uid
     def get_msg(self, uid):
-        message = self.service.users().messages().get(userId='me', id=uid, format='raw').execute()
+        message = self.service.users().get(userId='me', id=uid, format='raw').execute()
         return message_from_bytes(base64.urlsafe_b64decode(message['raw'].encode('utf-8')))
 
     # Mark message as read and set flags if required

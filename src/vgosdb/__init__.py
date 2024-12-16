@@ -15,7 +15,6 @@ from ivsdb import IVSdata
 from vgosdb.wrapper import Wrapper
 from vgosdb.correlator import CorrelatorReport
 
-
 get_db_name = re.compile('(?P<name>\d{2}[A-Z]{3}\d{2}[A-Z]{1,2}|\d{8}-[a-z0-9]{1,12}).*$').match
 
 
@@ -50,12 +49,12 @@ class VGOSdb:
         folder = str(folder)
         self.folder = folder[:-1] if folder and folder.endswith('/') else folder
         if not os.path.exists(self.folder):
-            print(self.folder, 'doest not exist')
+            self.errors.append(f"{self.folder} doest not exist")
             return
         try:
             self.name = get_db_name(os.path.basename(self.folder))['name']
         except:
-            print('Invalid db_name')
+            self.errors.append('Invalid db_name')
             return
 
         self._valid = True
@@ -277,7 +276,6 @@ class VGOSdb:
     def get_variable(self, path, name, is_str=False):
         with Dataset(path, 'r') as nc:
             if name not in nc.variables:
-                print(f'{name} not found')
                 return np.ma.core.MaskedArray([])
             var = nc.variables[name]
             data = var[:][0] if var.dimensions[0] == 'DimUnity' else var[:]
@@ -503,7 +501,6 @@ def vgosDb_dump(db_name):
     print(vgosdb.session)
     print(vgosdb.type)
     print(vgosdb.get_v001_wrapper().path)
-
 
 
 if __name__ == '__main__':

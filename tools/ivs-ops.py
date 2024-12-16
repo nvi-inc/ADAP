@@ -45,7 +45,7 @@ def extract_ids(subject):
             if ses.type == 'intensive':
                 found[ses_id] = {'codes': ['INT']}
                 continue
-            network = [stations.get(sta_id.capitalize(), None) for sta_id in ses.stations]
+            network = [get(sta_id.capitalize(), None) for sta_id in ses.stations]
             network = sorted(network, key=itemgetter('order', 'code'))
             lst = []
             for station in network:
@@ -91,6 +91,7 @@ def is_valid_message(msg):
     subject = re.sub(r'[IVS\-[a-zA-Z]+]|fw\:|message|re\:|[.,!?:;]', ' ', subject).lower()
     return True, ' '.join(re.sub(r'[^a-z0-9 ]', '', subject).split())
 
+
 if __name__ == '__main__':
     import argparse
     from utils import app
@@ -104,7 +105,7 @@ if __name__ == '__main__':
 
     args = app.init(parser.parse_args())
 
-    credentials = '/sgpvlbi/progs/config/adap/ivsop.json'  # app.secret('Mail', args.account)
+    credentials = '/sgpvlbi/progs/config/adap/ivsop-1.json'
     stations = readDICT('/sgpvlbi/progs/config/adap/stations.toml')
     sta_list = tuple([sta.lower() for sta in list(stations.keys())])
 

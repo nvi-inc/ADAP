@@ -5,6 +5,8 @@ from utils.servers import get_server
 import tarfile
 import tempfile
 import os
+from pathlib import Path
+
 
 class STATIONstats:
     def __init__(self, template):
@@ -18,7 +20,7 @@ class STATIONstats:
         self.table = self.parser.getElementsByTagName('table')[0]
 
     def add_date(self, timestamp):
-        col =  AdvancedTag('td', [('class', 'start')])
+        col = AdvancedTag('td', [('class', 'start')])
         timestamp = timestamp if isinstance(timestamp, datetime) else datetime.utcfromtimestamp(timestamp)
         col.appendText(timestamp.strftime('%Y-%m-%d %H:%M'))
         return col
@@ -74,7 +76,7 @@ class STATIONstats:
                 year = year + 2000 if year < 50 else 1900;
                 rpath = os.path.join(rfolder, str(year), file.code)
                 lpath = os.path.join(lfolder, 'web_' + file.code)
-                db_name = file.code[0:9]
+                db_name = Path(file.code).stem
                 name = db.get_db_session_code(db_name)
                 if not name:
                     continue

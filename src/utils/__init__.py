@@ -39,11 +39,11 @@ def expand_object(data, cls=None, expand=False):
 
 
 # Decode string to float and return NaN if it fails
-def to_float(string):
+def to_float(string, default='nan'):
     try:
         return float(string.strip())
     except ValueError:
-        return float('nan')
+        return float(default)
 
 
 # Decode string to int and return 0 if it fails
@@ -80,13 +80,17 @@ def read_config(path: str) -> defaultdict:
 
 # Read lcl configuration file
 def read_lcl(path):
+
     with open(path) as file:
         return {key: val for key, val in
-                [map(str.strip, line[2:].split(':', 1)) for line in file.readlines() if line.startswith('# ')]}
+                [map(str.strip, line[2:].split(':', 1))
+                 for line in file.readlines() if line.startswith('# ') and ':' in line]
+                }
 
 
 # Read json or toml file must have json ot toml extension
 def readDICT(path, exit_on_error=False, hook=dict):
+    path = str(path)
     name = os.path.basename(path)
     ext = os.path.splitext(name)[1][1:].strip()
 

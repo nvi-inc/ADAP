@@ -163,7 +163,7 @@ if __name__ == '__main__':
     parser.add_argument('-w', '--who', help='which data center', required=False)
     parser.add_argument('db_name', help='vgosDB name')
 
-    args = app.init(parser.parse_args())
+    args = app
 
     if args.summary:
         get_summary(args.db_name)

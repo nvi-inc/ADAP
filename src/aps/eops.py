@@ -1,9 +1,10 @@
 import traceback
 
-from aps import solve
+from utils import app
 from aps.spool import read_spool
 from aps.eop import EOP
 from aps.eob import eob_to_eops
+from aps import solve
 
 
 class EOPS(EOP):

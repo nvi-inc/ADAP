@@ -5,28 +5,6 @@ import socket
 
 from utils import app
 from ivsdb import IVSdata
-from rmq import RMQclient, connect, publish
-
-
-class Publisher(RMQclient):
-    def __init__(self):
-        super().__init__()
-
-    def __enter__(self):
-        self.connect()
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.close()
-
-    def send(self, message, level='INFO', routing_key='log', app=''):
-        headers = {'user': os.environ['SUDO_USER'] if 'SUDO_USER' in os.environ else os.environ['USER'],
-                   'server': socket.gethostname().split('.')[0].split('-')[-1].upper(),
-                   'time': datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-4],
-                   'pid': str(os.getpid()),
-                   'level': level, 'app': app}
-
-        self.publish(routing_key, message, headers=headers)
 
 
 def record_submitted_files(records):

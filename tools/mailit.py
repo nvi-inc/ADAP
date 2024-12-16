@@ -10,7 +10,7 @@ from utils.mail import build_message, send_message, get_mail_info
 def mailit(args):
     errors = []  # Keep error messages
     # Define sender
-    server, sender = args.fr, args.server
+    server, sender = args.server, args.fr
     if not all((server, sender)):
         server, sender = get_mail_info()
     if not server:

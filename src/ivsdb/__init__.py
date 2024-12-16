@@ -68,7 +68,7 @@ class IVSdata:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.close()
 
-    # Build tables using definitions in model.py file
+    # Build tables using definitions in model_.py file
     @staticmethod
     def build(url):
         models.Base.metadata.create_all(create_engine(url))

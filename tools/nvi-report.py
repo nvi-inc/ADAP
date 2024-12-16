@@ -1,14 +1,16 @@
 import os
 import re
 import operator
+import toml
+
 from tempfile import gettempdir
 from pathlib import Path
 from datetime import datetime, timedelta
 from tzlocal import get_localzone
 from pytz import utc as UTC
+from subprocess import Popen, PIPE
 
 from utils import app
-from utils.servers import load_servers, get_server, DATACENTER
 from ivsdb import IVSdata, models
 from vgosdb import VGOSdb
 
@@ -26,7 +28,7 @@ class Report:
 
     not_defined = datetime(1970, 1, 1)
 
-    def __init__(self, monthly=False, today=None):
+    def __init__(self, monthly=False, today=None, first_day=0):
 
         self.end, self.start, self.submitted, self.period = None, None, None, None
         self.template, self.path = None, None
@@ -39,15 +41,19 @@ class Report:
 
         info = app.load_control_file(name=app.ControlFiles.NVIreport)[-1]
 
-        self.monthly(info, today) if monthly else self.weekly(info, today)
+        self.monthly(info, today) if monthly else self.weekly(info, today, first_day)
 
         self.scheduling_comments = info['Scheduled']
+        with open(Path(Path(app.args.config).parent, 'logger.toml')) as log_config:
+            self.current_log = Path(toml.load(log_config)['handlers']['file']['filename'])
 
     # Set parameters for weekly report
-    def weekly(self, info, today):
-        self.end = today - timedelta(days=(today.weekday()+1))
+    def weekly(self, info, today, first_day):
+        if (days := today.weekday() - first_day + 1) < 0:
+            days += 7
+        self.end = today - timedelta(days=days)
         self.start = self.end - timedelta(days=6)
-        self.submitted = self.start + timedelta(days=10)
+        self.submitted = self.start + timedelta(days=10) if first_day == 0 else today
         self.template = info['Templates']['weekly']
 
         if self.start.strftime('%Y') != self.end.strftime('%Y'):
@@ -72,12 +78,29 @@ class Report:
 
     # Special function to decode timetag
     def decode_timetag(self, line):
-        # Sometime the datetime.strptime failed because of seconds = 60 or hours = 24.
+        # Some time the datetime.strptime failed because of seconds = 60 or hours = 24.
         data = line.replace('TIMETAG', '').replace('UTC', '').strip()
         hour, minute, second = list(map(int, data[-8:].split(':')))
         seconds = second + minute * 60 + hour * 3600
         utc = datetime.strptime(data[:10], '%Y/%m/%d') + timedelta(seconds=seconds)
         return UTC.localize(utc)
+
+    def is_auto(self, ses):
+        if not ses.is_intensive:
+            return False
+        start, lines = ses.start.strftime('%Y-%m-%d.%h%m%s'), []
+        for file in self.current_log.parent.iterdir():
+            if file.suffix == '.gz' and file.stem > start:
+                cmd = f"zgrep {ses.db_name} {file}"
+                st_out, st_err = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE).communicate()
+                lines.extend(st_out.decode('utf-8').splitlines())
+        cmd = f"grep {ses.db_name} {self.current_log}"
+        st_out, st_err = Popen(cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE).communicate()
+        lines.extend(st_out.decode('utf-8').splitlines())
+        data = '\n'.join(lines)
+        find = re.compile(r'aps .* failed').findall
+        return all(('auto analyse' in data, 'nuSolve ok' in data, 'send auto processing email' in data,
+                    not bool(find(data))))
 
     # Get analyzed time from history file
     def get_analyzed_time(self, vgosdb, nuSolve):
@@ -118,7 +141,8 @@ class Report:
                                 downloaded = self.get_downloaded(dbase, db_name, analyzed)
                             if self.start <= analyzed <= self.end:
                                 record = (ses_id, session.start, downloaded, analyzed,
-                                          self.latency(downloaded, analyzed), self.comments(session))
+                                          self.latency(session, downloaded, analyzed),
+                                          self.comments(session))
                                 self.analyzed[session.type].append(record)
                                 self.is_vgos[session.type] += wrapper.has_cal_cable()
 
@@ -138,10 +162,11 @@ class Report:
         return None
 
     # Get processing latency
-    @staticmethod
-    def latency(downloaded, processed):
+    def latency(self, session, downloaded, processed):
         if not downloaded or downloaded > processed:
             return '??'
+        if self.is_auto(session):
+            return 'AUTO'
         dt = (processed - downloaded).total_seconds()
         hours, minutes = divmod(dt / 60, 60)
         if minutes > 59.5:
@@ -172,38 +197,6 @@ class Report:
                         comments.append(re.sub('^- ', '',line.strip()))
         # Clean comments
         return '\n'.join(list(filter(None, comments)))
-
-    # Get list of upcoming schedules
-    def get_scheduled_old(self, dbase):
-        first, last = self.start, datetime.now() + timedelta(days=31)
-        upcoming = [session for ses_id in dbase.get_sessions(first, last, ['standard', 'intensive'])
-                    if (session := dbase.get_session(ses_id)) and session.operations_center.upper() == 'NASA']
-
-        # Check on cddis or bkg if skd or vex files are there
-        load_servers(DATACENTER)
-        folder = app.Applications.DataCenters['Folders']['aux']
-        tz = get_localzone()
-        self.scheduled, found = [], set()
-        for center in ['cddis']: # Checking on bkg as backup
-            with get_server(DATACENTER, center) as server:
-                for session in upcoming:
-                    for ext in ['skd', 'vex']:
-                        if session.code not in found:
-                            name = f'{session.code}.{ext}'
-                            try:
-                                rpath = os.path.join(server.root, folder, session.year, session.code, name)
-                                exists, created = server.get_file_info(rpath)
-                            except:
-                                continue
-                            if exists:
-                                found.add(session.code)
-                                utc = UTC.localize(datetime.fromtimestamp(created)).replace(tzinfo=None)
-                                print(self.start, utc, self.end)
-                                if self.start <= utc.astimezone(tz=tz).replace(tzinfo=None) <= self.end:
-                                    days = int((session.start.date() - utc.date()).total_seconds() / 86400)
-                                    readiness = f'{days:d} day{"s" if days > 1 else ""}'
-                                    comments = self.scheduling_comments.get(session.code, '')
-                                    self.scheduled.append((session.code, session.start, utc, readiness, comments))
 
     # Get list of upcoming schedules
     def get_scheduled(self, dbase):
@@ -250,10 +243,10 @@ class Report:
 
         doc = Document(self.template)
 
-        # Initiate key words to replace in text
+        # Initiate keywords to replace in text
         keys = {'{DATE}': self.submitted.strftime('%Y-%m-%d'), '{PERIOD}': self.period}
         tables = []
-        # Read all paragraphs to find tables and change key words in text
+        # Read all paragraphs to find tables and change keywords in text
         for block in iter_blocks(doc):
             if isinstance(block, Table):
                 tables.append(block)
@@ -354,6 +347,8 @@ if __name__ == '__main__':
     parser.add_argument('-a', '--analyzed', help='analyzed sessions for year', type=int, default=0, required=False)
     parser.add_argument('-m', '--monthly', help='monthly report', action='store_true')
     parser.add_argument('-t', '--today', help='change today', required=False)
+    parser.add_argument('-f', '--first_day', help='first week day of report (0 is Monday)',
+                        type=int, default=0, required=False)
 
     args = app.init(parser.parse_args())
 
@@ -366,7 +361,7 @@ if __name__ == '__main__':
             for key, val in report.analyzed.items():
                 print(key, len(val), report.is_vgos[key])
         else:
-            report = Report(args.monthly, args.today)
+            report = Report(args.monthly, args.today, args.first_day)
             report.get_vgosdb(dbase)
             report.get_scheduled(dbase)
             report.create()

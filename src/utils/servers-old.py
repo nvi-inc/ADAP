@@ -348,7 +348,7 @@ class HTTPserver(FTPserver):
 
         # Get all files
         for item in page.find_all(attrs={'class': 'archiveItemTextContainer'}):
-            name = item.find(attrs={'class': 'archiveItemText'}).get('href').strip()
+            name = item.get('href').strip()
             local_time = datetime.strptime(item.find(attrs={'class': 'fileInfo'}).text[0:19], '%Y:%m:%d %H:%M:%S')
             timestamp = int(self.tz.localize(local_time).astimezone(pytz.UTC).timestamp())
             self.last_files.append((name, timestamp))

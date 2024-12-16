@@ -220,7 +220,7 @@ class CorrelatorReport:
         return '. '.join(phrases) if phrases else ''
 
     # Read correlator report to extract notes
-    def get_notes(self, keep_all=False):
+    def get_notes(self, apply_filter=True):
         try:
             if not self.text:
                 self.read()
@@ -238,8 +238,9 @@ class CorrelatorReport:
             for code, comments in notes.items():
                 paragraph = ' '.join([f'{comment}{"" if comment.endswith(".") else "."}' for comment in comments
                                       if comment.strip()]).strip()
-                paragraph = self.clean(rej_words, rej_exact, paragraph)
-                if keep_all or paragraph:
+                if apply_filter:
+                    paragraph = self.clean(rej_words, rej_exact, paragraph)
+                if paragraph:
                     clean_notes[code if code in ('-', '--') else codes[code]] = paragraph
             # Add note if intensive has vlba station and vlba.log file is not there
             warnings = []
@@ -266,4 +267,6 @@ if __name__ == '__main__':
     parser.add_argument('path')
     args = app.init(parser.parse_args())
 
-    CorrelatorReport(args.path).save('test.corr')
+    with CorrelatorReport(args.path) as corr:
+        for name, comment in corr.get_notes(apply_filter=False).items():
+            print(name, comment)

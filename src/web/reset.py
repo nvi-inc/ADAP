@@ -2,7 +2,6 @@ import os
 import requests
 
 from utils import app
-from ivsdb import IVSdata
 from web import ESDWebDev
 
 
@@ -22,8 +21,8 @@ class WebReset:
             return None
 
     def reset(self, first, last):
-        url, tunnel = app.get_dbase_info()
-        with IVSdata(url, tunnel) as dbase, ESDWebDev(self.esdweb) as esd:
+        with ESDWebDev(self.esdweb) as esd:
+            dbase = app.get_dbase()
             if first == 'stations':
                 base_page = 'sessions/stations'
                 for sta_id in dbase.get_stations():

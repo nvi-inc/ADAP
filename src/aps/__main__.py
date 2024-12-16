@@ -22,6 +22,7 @@ from aps.reports import AnalysisReport, AnalysisReportEditor
 
 logger = logging.getLogger('aps')
 
+
 class USR1signal(QTimer):
 
     def __init__(self, parent):

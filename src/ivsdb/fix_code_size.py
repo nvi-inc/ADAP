@@ -3,10 +3,6 @@ from sqlalchemy import create_engine
 
 
 def fix_code_size():
-    """
-    This code was use to change the length of session name in all tables.
-    Should not be required but could be modified for other variables.
-    """
 
     db_url, _ = app.get_dbase_info()
     connection = create_engine(db_url).connect()

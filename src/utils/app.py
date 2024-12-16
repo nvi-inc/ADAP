@@ -27,8 +27,16 @@ def init(arg_list):
         if isinstance(info, dict):
             setattr(this_module, key, type('', (), info))
         else:
-            setattr(key, info)
+            setattr(this_module, key, info)
     return args
+
+
+def add_args_attr(key, info):
+    global args
+    if isinstance(info, dict):
+        setattr(args, key, type('', (), info))
+    else:
+        setattr(args, key, info)
 
 
 # Change dictionary into attributes of a class
@@ -107,25 +115,9 @@ def _open_dbase():
 def get_dbase():
     return _dbase if _dbase else _open_dbase()
 
-"""
-def get_dbase_decorator(f):
-    from ivsdb import IVSdata
 
-    def inner():
-        return inner.dbase
-    # Get database url and tunnel information
-    inner.url = load_control_file(name=ControlFiles.Database)[-1]['Credentials'][args.db]
-    inner.tunnel = getattr(Tunnel, args.db, None)
-    # Open database
-    inner.dbase = IVSdata(inner.url, inner.tunnel)
-    inner.dbase.open()
-    return inner()
-
-
-@get_dbase_decorator
-def get_dbase():
-    return get_dbase.dbase
-"""
+def reset_db():
+    return _open_dbase()
 
 
 # Get tunnel information from config file

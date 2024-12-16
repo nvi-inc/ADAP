@@ -100,11 +100,11 @@ class ANdash(QMainWindow):
 
         self.aux_folder, self.vgos_folder, self.sessions = folders['aux'], folders['vgosdb'], None
 
-        self.show_rapid = self.appInfo.get('ShowRapid', False)
-        self.session_type = self.appInfo.get('SessionType', 'all')
-        self.manual_mode = self.appInfo.get('ManualRefresh', False)
-        self.refresh_rate = self.appInfo.get('RefreshRate', 5)
-        self._width, self._height = self.appInfo.get('Size', [900, 100])
+        self.show_rapid = get('ShowRapid', False)
+        self.session_type = get('SessionType', 'all')
+        self.manual_mode = get('ManualRefresh', False)
+        self.refresh_rate = get('RefreshRate', 5)
+        self._width, self._height = get('Size', [900, 100])
 
         self.manual = self.last_updated = None
 
@@ -267,7 +267,7 @@ class ANdash(QMainWindow):
 
     # Initial position of application window
     def init_pos(self):
-        x, y = self.appInfo.get('Position', [0, 0])
+        x, y = get('Position', [0, 0])
         self.move(x, y)
         self.resize_it()
 

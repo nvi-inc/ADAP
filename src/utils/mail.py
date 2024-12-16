@@ -81,7 +81,7 @@ def get_mail_info(user=None):
     user = user if user else os.environ.get('SUDO_USER', os.environ.get('USER'))
     hostname = socket.gethostname()
     info = readDICT(os.path.join(os.environ.get('CONFIG_DIR', ''), 'emails.toml'))
-    host, server = info.get('host'), info.get('server')
+    host, server = get('host'), get('server')
     if hostname in host and user in host[hostname]:
         return server.get(hostname), host[hostname][user].get('sender')
     return None, None

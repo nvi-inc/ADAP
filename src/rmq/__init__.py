@@ -120,7 +120,7 @@ class RMQclient:
     def send_errors(self, wait=True):
         if self._errors:
             self.notify('\n'.join(self._errors), wait=wait)
-            self._errors = [] # Clean error buffer
+            self._errors = []  # Clean error buffer
 
     # Request quiet time period from app and check if in quiet time period
     def is_quiet_time(self, log_info=True):
@@ -382,7 +382,7 @@ class Worker(RMQclient):
             api = API(self.args)
             for consumer in api.get_items('consumers'):
                 if consumer['consumer_tag'] == self.consumer_tag:
-                    connection = consumer.get('channel_details', {}).get('connection_name', '')
+                    connection = consumer.get('connection_name', '')
                     if connection:
                         ok, _ = api.delete('connections/{}'.format(connection))
                         self.notify('{} Consumer {} has{} been deleted'.format(self.listen_queue, self.consumer_tag, '' if ok else ' NOT'))

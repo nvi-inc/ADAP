@@ -11,8 +11,6 @@ def sched_reader(session, vex_first=False):
     for code in codes:
         if (path := session.file_path(code)).exists():
             return cls[code](path)
-        else:
-            print(f'Could not find {str(path)}')
     return SKD('')
 
 
@@ -23,5 +21,5 @@ def get_schedule(session, vex_first=False, VieSched_sort=False):
             for sta in session.removed:
                 if (sta := sta.capitalize()) in sched.stations['codes']:
                     sched.missed.append(sched.stations['codes'][sta]['name'])
-
-    return sched
+            return sched
+    return None

@@ -270,12 +270,21 @@ class VGOSDBController:
                 self.notify(f'{db_name} {str(err)}\n{str(traceback.format_exc())}')
         return True
 
-    @staticmethod
-    def has_cal_cable(wrapper):
-        for item in wrapper.var_list.values():
-            if isinstance(item, dict):
-                if 'cal-cable_kpcmt' in item.keys():
-                    return True
+    def use_last_wrapper(self):
+        # Check if one of the station has Cal-Cable_kPcmt.nc file
+        for name in self.vgosdb.station_list:
+            if Path(self.vgosdb.folder, name, 'Cal-Cable_kPcmt.nc').exists():
+                return True
+        # Check if session has VLBA stations and no logs for them
+        url, tunnel = app.get_dbase_info()
+        vlba = app.VLBA.stations
+        with IVSdata(url, tunnel) as dbase:
+            names = dbase.get_station_name_dict()
+            session = dbase.get_session(self.vgosdb.session)
+            for name in self.vgosdb.station_list:
+                if (sta_id := names[name]) in vlba and not session.log_path(sta_id).exists():
+                    if Path(self.vgosdb.folder, name, 'Met.nc').exists():
+                        return True
         return False
 
     # Process applications required by nuSolve
@@ -283,7 +292,17 @@ class VGOSDBController:
         if not folder or (hasattr(app.args, 'no_processing') and app.args.no_processing):
             return  # Nothing to do
 
+        # Check if correlator data are same
         self.vgosdb = VGOSdb(folder)
+        # Save correlator report
+        if not app.args.test and self.save_corr_report:
+            try:
+                if name := self.vgosdb.save_correlator_report():
+                    self.info(f'{name} saved to {self.vgosdb.code}')
+            except Exception as exc:
+                self.warning(f'Could not save {name}\n{str(exc)}')
+                pass
+
         try:
             if self.check_correlator_data():
                 self.warning(f'vgosDB correlator data same as {self.moved_folder}')
@@ -293,14 +312,14 @@ class VGOSDBController:
             return
 
         if self.vgosdb.get_last_wrapper(self.agency):
-            self.warning(f'vgosDB already process by {self.agency}')
+            self.warning(f'vgosDB already processed by {self.agency}')
             return  # This vgosDb has already been process by this agency
         err = []
         wrapper = self.vgosdb.get_oldest_wrapper()
-        wrapper = wrapper if (isVGOS := self.has_cal_cable(wrapper)) else self.vgosdb.get_v001_wrapper()
+        wrapper = wrapper if (skip := self.use_last_wrapper()) else self.vgosdb.get_v001_wrapper()
         for app_info in self.nusolveApps:
             # Check if this processing is done for VGOS sessions
-            if isVGOS and not app_info.get('processVGOS', False):
+            if skip and not app_info.get('processVGOS', False):
                 continue
             # Execute app
             path = path if (path := shutil.which(app_info['name'])) else app_info['path']
@@ -316,15 +335,6 @@ class VGOSDBController:
         # Check if $EXPER is correct
         if skd_msg := self.check_sched():
             err.append(skd_msg)
-
-        # Save correlator report
-        if not app.args.test and self.save_corr_report:
-            try:
-                if name := self.vgosdb.save_correlator_report():
-                    self.info(f'{name} saved to {self.vgosdb.code}')
-            except Exception as exc:
-                self.warning(f'Could not save {name}\n{str(exc)}')
-                pass
 
         if options := self.auto.get(self.vgosdb.type, None):
             try:

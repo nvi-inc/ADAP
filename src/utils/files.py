@@ -57,7 +57,6 @@ class TEXTfile:
             self.line_nbr = 0
         return self
 
-
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.file:
             self.file.close()
@@ -77,7 +76,6 @@ class TEXTfile:
             return True
         return False
 
-
     def readUntil(self, key_word='', start_word=''):
         while self.has_next():
             if not self.line:
@@ -90,10 +88,8 @@ class TEXTfile:
                 return True
         return False
 
-
     def isDOS(self):
         return self.EOL == -2
-
 
 
 # Compute md5 hash for a file
@@ -101,12 +97,13 @@ def get_md5sum(path, chunk_size=32768):
 
     md5 = hashlib.md5()
     with open(path, 'rb') as file:
-        while(True):
+        while True:
             chunk = file.read(chunk_size)
             if not chunk:
                 break
             md5.update(chunk)
     return md5.hexdigest()
+
 
 def remove(path):
     try:
@@ -114,6 +111,7 @@ def remove(path):
             os.remove(path)
     except:
         pass
+
 
 def chmod(path):
     try:

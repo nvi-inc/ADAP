@@ -1,9 +1,8 @@
 import os
 import logging
 import math
-from pathlib import Path
 
-from utils import app
+from utils import app, to_float
 from utils.files import remove
 from aps import solve
 from aps.spool import read_spool
@@ -61,38 +60,42 @@ class EOPM(EOP):
     # Run SimpleSimul to get realistic UT1-TAI rms values
     def simulated_rms(self, vgosdb, spool):
         template, cfg = self.get_opa_path('SIMPLESIMUL'), self.get_control_filename()
-        if not (slv := Path(os.environ.get('WORK_DIR'), f'{vgosdb.name}_{self.initials}.slv')).exists():
-            self.add_error(f'SIMUL requested but {slv} does not exist!')
-            return False
-        words = {'@session_file@': str(slv)}
-        if not self.make_control_file(template, cfg, words, header=False):
-            self.add_error('SIMUL requested but could not make control file')
-            return False
-        ans = self.execute_command(f'SimpleSimul {cfg}', vgosdb.name)
-        # Read UT1-TAI
-        if 'Done' not in ans[-1] or 'Simulation results in' not in ans[-2]:
-            self.add_error(f'SimpleSimul returned {ans[-1]}')
-            return False
-        path = ans[-2].split(':')[-1].strip()
-        with open(path) as f:
-            if not (values := [float(line.split()[-2].strip()) for line in f if 'UT1' in line]):
-                self.add_error(f'No UT1 records in {path}')
-                return False
-            for run, rms in zip(spool.runs, values):
-                logger.warning(f'UT1-TAI FE {run.UEOP[1]} replaced by RMS {rms:.2f}')
-                run.UEOP[1] = rms
-
-        remove(path)
-        remove(slv)
-        return True
+        slv = os.path.join(os.environ.get('WORK_DIR'), f'{vgosdb.name}_{self.initials}.slv')
+        print('slv', slv, os.path.exists(slv), )
+        if os.path.exists(slv):
+            words = {'@session_file@': slv}
+            print('cfg words', words)
+            if not self.make_control_file(template, cfg, words, header=False):
+                print('cfg error', self.errors)
+            print('cfg 1', cfg, os.path.getsize(cfg))
+            ans = self.execute_command(f'SimpleSimul {cfg}', vgosdb.name)
+            print('cfg 2', cfg, os.path.getsize(cfg))
+            # Read UT1-TAI
+            if 'Done' in ans[-1] and 'Simulation results in' in ans[-2]:
+                path = ans[-2].split(':')[-1].strip()
+                logger.info(f'SimpleSimul file {path}')
+                print('simul path', path)
+                with open(path) as f:
+                    values = [line.split()[-2] for line in f if 'UT1-TAI' in line]
+                    logger.info(f'runs {len(spool.runs)} UT1-TAI {len(values)}')
+                    for run, rms in zip(spool.runs, values):
+                        print('UT1-TAI', run.UEOP)
+                        logger.warning(f'UT1-TAI FE {run.UEOP[1]} replaced by RMS {to_float(rms)}')
+                        run.UEOP[1] = to_float(rms)
+                #remove(path)
+        else:
+            logger.warning(f'SIMUL requested but {slv} does not exist!')
 
     def get_eob_record(self, arc_line, session, vgosdb):
         # Make control file
-        cnt, erp, template = self.get_control_filename(), self.get_opa_path('GEN_INPERP'), self.get_opa_path('EOPS_CNT')
+        cnt, erp = self.get_control_filename(), self.get_opa_path('GEN_INPERP')
         words = {'@erp_file@': f'{erp}  SPL  UT1S ', '@arc_line@': arc_line}
+        print('cnt words', words)
+        template = self.get_opa_path('EOPS_CNT')
         if not self.make_control_file(template, cnt, words, header=True):
-            self.add_error(f'could not make control file for eob record')
-            return False, None
+            print('cnt error', self.errors)
+        print('cnt', cnt, os.path.getsize(cnt))
+
         # Call solve script
         solve.check_lock(self.initials)
         ans = self.execute_command(f'solve {self.initials} {cnt} silent', vgosdb.name)
@@ -101,20 +104,22 @@ class EOPM(EOP):
             path = self.save_bad_solution('solve_', ans)
             self.add_error(f'Error running solve! Check control file {cnt} or output {path}')
             return False, None
+
         # Read spool file
         if not (spool := read_spool(initials=self.initials, db_name=vgosdb.name)):
             self.add_error(f'Error reading spool file SPLF{self.initials}')
             return False, None
         # Replace RMS for UT1 values if vgos session:
-        if self.run_simul and not self.simulated_rms(vgosdb, spool):
-            return False, None
+        if self.run_simul:
+            self.simulated_rms(vgosdb, spool)
+        #remove(os.path.join(os.environ.get('WORK_DIR'), f'{vgosdb.name}_{self.initials}.slv'))
         return True, spool.runs[0].make_eob_record(self.name2code, session.code, False)
 
     # Make control file and execute solve
     def execute(self, session, vgosdb):
         baselines, stations = self.get_baselines(session, vgosdb)
         if not baselines:
-            self._warning = ' WARNING - no long baselines'
+            logger.warning = ' WARNING - no long baselines'
             return True
         wrapper, arc_lines = vgosdb.wrapper.name, []
         if not self.get_opa_code('EOPM_ONLY_SINGLE_BASELINE') == 'YES':
@@ -128,6 +133,7 @@ class EOPM(EOP):
 
         records = []
         for arc_line in arc_lines:
+            print('arc_line', arc_line)
             ok, val = self.get_eob_record(arc_line, session, vgosdb)
             if not ok:
                 return False

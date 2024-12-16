@@ -1,43 +1,45 @@
-from rmq import connect
+from utils import app
+from rmq import RMQclient
 
 
-def create_exchanges(channel):
-    exchanges = {'LOG': 'fanout', 'VLBI': 'direct'}
-    for name, exchange_type in exchanges.items():
-        channel.exchange_declare(exchange=name, exchange_type=exchange_type, durable=True)
-    channel.exchange_bind(destination='LOG', source='VLBI', routing_key='log')
+class RMQbuilder(RMQclient):
+    def __init__(self):
+        super().__init__()
 
+        self.builder_info = app.load_control_file(name=app.ControlFiles.RMQ)[1]['Build']
 
-def create_queues(channel):
-    # Declare required queues
-    queues = {'VLBIlogger': {'exchange': 'LOG', 'keys': ['']},
-              'VLBIaux': {'keys': ['aux']},
-              'VLBIcontrol': {'keys': ['control', 'ivscontrol']},
-              'VLBIvgosdb': {'keys': ['V001', 'new-vgosdb']}
-              }
-    for name, info in queues.items():
-        channel.queue_declare(name, durable=True)
-        for key in info.get('keys', ['']):
-            channel.queue_bind(exchange=info.get('exchange', 'VLBI'), queue=name, routing_key=key)
+    def create_exchanges(self):
+        channel = self.conn.channel()
+        for name, item in self.builder_info['Exchanges'].items():
+            print('Exchange', name, item['args'])
+            channel.exchange_declare(exchange=name, **item['args'])
+            if 'binding' in item:
+                for key in item["binding"]["keys"]:
+                    channel.exchange_bind(destination=item['binding']['exchange'], source=name, routing_key=key)
+
+    def create_queues(self):
+        channel = self.conn.channel()
+        for name, item in self.builder_info['Queues'].items():
+            arguments = dict(**item.get('arguments', {}), **{'x-queue-type': 'classic'})
+            print('Queue', name, arguments)
+            channel.queue_declare(queue=name, durable=True, arguments=arguments)
+            if 'binding' in item:
+                for key in item["binding"]["keys"]:
+                    channel.queue_bind(exchange=item['binding']['exchange'], queue=name, routing_key=key)
 
 
 if __name__ == '__main__':
 
     import argparse
 
-    parser = argparse.ArgumentParser( description='Check for missing schedules' )
+    parser = argparse.ArgumentParser(description='RabbitMQ information')
 
-    parser.add_argument('user', help='RabbitMQ username')
-    parser.add_argument('password', help='RabbitMQ password')
+    parser.add_argument('-c', '--config', help='config file', required=True)
+    parser.add_argument('-d', '--db', help='database name', default='ivscc', required=False)
 
-    args = parser.parse_args()
+    args = app.init(parser.parse_args())
 
-    host, port = 'localhost', 5672
-
-    conn = connect(host, port, args.user, args.password)
-    channel = conn.channel()
-
-    create_exchanges(channel)
-    create_queues(channel)
-
-    conn.close()
+    client = RMQbuilder()
+    client.connect()
+    client.create_exchanges()
+    client.create_queues()
