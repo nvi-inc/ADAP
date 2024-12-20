@@ -13,11 +13,10 @@ repository = 'https://github.com/nvi-inc/ADAP.git'
 pyproject = "https://raw.githubusercontent.com/nvi-inc/ADAP/refs/heads/master/pyproject.toml"
 
 class Version:
-    decode = re.compile(r'(?P<version>\d+)\.(?P<release>\d+)\.?(?P<modification>\d?)').match
+    validate = re.compile(r'(?P<version>\d+)\.(?P<release>\d+)\.?(?P<modification>\d?)').match
     def __init__(self, text):
-        self.version = self.release = 0
-        self.modification = None
-        if match := self.decode(re.sub(r'[^0-9.]', '', text)):
+        self.version = self.release = self.modification = None
+        if match := self.validate(re.sub(r'[^0-9.]', '', text)):
             self.version, self.release, self.modification = match['version'], match['release'], match['modification']
 
     def __str__(self):
@@ -28,6 +27,9 @@ class Version:
         same = True if not all((self.modification, other.modification)) else self.modification == other.modification
         return all((self.version == other.version, self.release == other.release, same))
 
+    @property
+    def valid(self):
+        return all((self.version, self.release))
 
 def execute(cmd):
     st_out, st_err = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE).communicate()
@@ -60,6 +62,7 @@ def check_github(adap):
 
 
 def make_version(root, adap):
+
     # Check that github repository has same version
     check_github(adap)
     # Check if folder exist
@@ -73,7 +76,9 @@ def make_version(root, adap):
     # Move to folder and execute uv to create virtual environment
     os.chdir(folder)
     # Execute script to create virtual environment
-    ans = execute('scripts/make_venv')
+    ans = execute('uv venv')
+    print(f'[{ans}]')
+    ans = execute('uv add pyproject.toml')
     print(f'[{ans}]')
 
 
@@ -92,10 +97,8 @@ if __name__ == '__main__':
 
     try:
         # Make sure version is valid
-        if not all(map(str.isdigit, args.version.split('.'))):
-            raise Exception(f'invalid version numbering')
-        if not (version := Version(args.version)):
-            raise Exception('invalid version')
+        if not (version := Version(args.version)).valid:
+            raise Exception('invalid version numbering')
         if args.action == 'make':
             make_version(args.root, version)
     except Exception as exc:

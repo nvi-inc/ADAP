@@ -9,4 +9,4 @@ export PYTHONPATH=$APP_DIR/src
 
 export XDG_RUNTIME_DIR=/tmp/runtime-$ME
 
-source $APP_DIR/venv/bin/activate
+source $APP_DIR/.venv/bin/activate

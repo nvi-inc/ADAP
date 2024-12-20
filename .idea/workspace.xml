@@ -5,7 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d45bb200-62f8-4f7f-b089-cb0df8ef62ad" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/scripts/make_venv" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/make_venv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tools/kill_vlbi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/adap" beforeDir="false" afterPath="$PROJECT_DIR$/bin/adap" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pyproject.toml" beforeDir="false" afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scripts/setup" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/setup" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/aps/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/__main__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/adap.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/adap.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/analyzed.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/analyzed.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/andash-2.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/andash-2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/andash.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/andash.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/aprioris_eop.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/aprioris_eop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/azel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/azel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/certificate.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/certificate.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/clean_wrappers.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/clean_wrappers.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/eopm.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/eopm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/fix_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/fix_db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/fix_eop.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/fix_eop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/fix_wgt.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/fix_wgt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/fs-10.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/fs-10.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/ivs-ops.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/ivs-ops.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/kill_apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/kill_apps.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/load_master.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/load_master.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/mail_report.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/mail_report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/mailit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/mailit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/master.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/master.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/need-gmail.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/need-gmail.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/nvi-report.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/nvi-report.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/nvi-sum.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/nvi-sum.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/sefds.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/sefds.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/toascii.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/toascii.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/tst_format.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/tst_format.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/upload.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/upload.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/uploaded.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/uploaded.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tools/vgosdb-status.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/vgosdb-status.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,20 +66,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/Users/mario/PycharmProjects/ADAP/scripts",
-    "settings.editor.selected.configurable": "preferences.general"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mario/PycharmProjects/ADAP/scripts&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.general&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/scripts" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
       <recent name="$PROJECT_DIR$/bin" />
       <recent name="$PROJECT_DIR$" />
     </key>
