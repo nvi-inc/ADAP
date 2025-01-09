@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d45bb200-62f8-4f7f-b089-cb0df8ef62ad" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/progs/bin/vkill" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/adap" beforeDir="false" afterPath="$PROJECT_DIR$/bin/adap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/VLBIintmonit.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/VLBIintmonit.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/VLBIlogger.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/VLBIlogger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/VLBIweb.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/VLBIweb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/__main__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/eopm2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/notes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/notes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/report.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/report.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rmq/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/rmq/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tools/kill_vlbi.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/kill_vlbi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/messaging.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

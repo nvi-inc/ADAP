@@ -98,8 +98,13 @@ def make_version(root, adap):
     link = Path(root, f'adap_v{adap.version}')
     # Change link to new folder
     execute(f"ln -sfn {folder} {link}")
+    # Copy latest version of vkill to bin directory
+    execute(f"cp {Path(folder, 'bin', 'vkill')} {Path(root, 'bin')}")
+    execute(f"chmod 775 {Path(root, 'bin', 'vkill')}")
     # Kill all VLBI applications attached to RabbitMQ
-
+    print(execute('vkill all'))
+    # Restart all applications with watchdog
+    execute(f"{Path(link, 'scripts/watchdog')}")
 
 
 if __name__ == '__main__':

@@ -23,7 +23,6 @@ class VLBIKiller(API):
         nbr_prc = 0
         for queue in self.queues:
             ok, info = self.get(f'queues/{self.vhost}/{queue}')
-            print(f"Queue {queue} {ok} {info}")
             if ok:  # Send stop message for each consumer
                 nbr_prc = max(nbr_prc, (nbr := info.get('consumers', 0)))
                 for _ in range(nbr):
@@ -36,6 +35,8 @@ class VLBIKiller(API):
                 print(f"Process {self.processes[pid]} {pid} was stopped")
             else:
                 waiting.append(pid)
+        if not waiting:
+            return
         print(f'Waiting for {len(waiting)} processes to complete.')
         ok, consumers = self.get('consumers')
         if ok:
@@ -56,6 +57,7 @@ class VLBIKiller(API):
                     else:
                         self.kill_process(consumer['channel_details']['peer_port'])
         # Kill any application that has not been stopped
+        time.sleep(0.1)
         for port, pid in self.ports.items():
             if pid in waiting and psutil.pid_exists(pid):
                 self.kill_process(port)
