@@ -1,6 +1,7 @@
 import os
 import re
 from datetime import datetime, timedelta
+from pathlib import Path
 from tempfile import NamedTemporaryFile
 
 import requests
@@ -33,7 +34,7 @@ class WebUpdater(Worker):
         self.dbase = None
 
         # Init some variables
-        self.stations, self.sessions, self.masters, self.nbr_files = [], [], [], 0
+        self.stations, self.sessions, self.masters, self.nbr_files = set(), set(), set(), 0
 
         self.esdweb, self.ws_url, self.ws_db = None, None, None
         self.lastmod = self.check_control_files()
@@ -83,7 +84,7 @@ class WebUpdater(Worker):
     # Add session code in list and update station list
     def add_session(self, ses_id, update_master=True):
         if ses_id not in self.sessions:
-            self.sessions.append(ses_id)
+            self.sessions.add(ses_id)
             session = self.dbase.get_session(ses_id)
             for sta in session.stations:
                 self.add_station(sta)
@@ -108,7 +109,7 @@ class WebUpdater(Worker):
         # Retrieve file from center since not sure if latest is on server
         load_servers(DATACENTER)
         with get_server(DATACENTER, center) as server:
-            rpath = os.path.join(server.root, rpath)
+            rpath = Path(server.root, rpath)
             ok, err = server.download(rpath, lpath)
         if ok:
             db = WEBdb(self.ws_db)
@@ -237,9 +238,7 @@ class WebUpdater(Worker):
     def process_msg(self, ch, method, properties, body):
 
         try:
-            if (record := body.decode('utf-8').strip()) == 'EOT':
-                return
-            center, name, rpath, timestamp = record.split(',')
+            center, name, rpath, timestamp = body.decode('utf-8').strip().split(',')
             center = 'cddis' if center == 'sftp2cddis' else center
 
             self.open_ivsdb()

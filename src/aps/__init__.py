@@ -34,7 +34,7 @@ class APS:
         super().__init__()
         # List to store error messages
         self._errors, self.critical = [], False
-        self.session = self.db_name = self.spool = self.vgosdb = None
+        self.session = self.db_name = self.spool = None
 
         # Check if environment variables have been defined
         if 'MK5_ROOT' not in os.environ:
@@ -157,9 +157,8 @@ class APS:
             problems = self.processing.Comments['Problems']
             # Read correlator notes
             self.processing.Comments['CorrNotes'] = True
-            print(self.vgosdb.station_list)
-             # Insert lines in problems
-            with CorrelatorReport(self.session.file_path('corr')) as corr:
+            # Insert lines in problems
+            with CorrelatorReport(self.session.file_path('corr'), self.vgosdb.station_list) as corr:
                 for name, comment in corr.get_notes(apply_filter=self.session.type != 'intensive').items():
                     prefix = name
                     for line in split_line(comment):

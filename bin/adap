@@ -31,9 +31,11 @@ class Version:
     def valid(self):
         return all((self.version, self.release))
 
+
 def execute(cmd):
     st_out, st_err = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE).communicate()
     return ' '.join(map(bytes.decode, filter(lambda item: item is not None, [st_out, st_err]))).strip()
+
 
 def install_uv():
     if not shutil.which('uv'):
@@ -41,6 +43,22 @@ def install_uv():
         if match := re.search(r'installing to\s*([^\s]*)', ans):
             print(f'installed uv at {match.groups(0)[0]}')
 
+
+def kill(app_name='all'):
+    from pathlib import Path
+    from psutil import Process, process_iter
+    import os
+
+    for prc in process_iter(attrs=['pid', 'name', 'cmdline']):
+        if prc.info['name'] == 'python':
+
+            name = [os.path.basename(path) for path in prc.info['cmdline'] if path.startswith('/sgpvlbi/progs/adap')]
+            if name and (name := name[0].replace('.py', '')) not in ['VLBIintmonit']:
+                try:
+                    Process(prc.info['pid']).kill()
+                    print(f'Successfully killed process {name} {prc.info["pid"]}')
+                except Exception as err:
+                    print(f'Failed killing process {name} {prc.info["pid"]}. [{str(err)}]')
 
 def check_github(adap):
     """
@@ -51,8 +69,7 @@ def check_github(adap):
     """
     ssl._create_default_https_context = ssl._create_unverified_context
     with urllib.request.urlopen(pyproject) as rsp:
-        lines = rsp.read().decode('utf-8').splitlines()
-        for line in lines:
+        for line in rsp.read().decode('utf-8').splitlines():
             if line.strip().startswith('version'):
                 if (github := Version(line.partition('=')[-1])) == adap:
                     print(f'github version {github}')
@@ -76,10 +93,13 @@ def make_version(root, adap):
     # Move to folder and execute uv to create virtual environment
     os.chdir(folder)
     # Execute script to create virtual environment
-    ans = execute('uv venv')
-    print(f'[{ans}]')
-    ans = execute('uv add pyproject.toml')
-    print(f'[{ans}]')
+    ans = execute('uv venv venv && uv pip install -r pyproject.toml --python venv --link-mode=copy ')
+    print('\n'.join([line for line in ans.splitlines() if not line.startswith(' +')]))
+    link = Path(root, f'adap_v{adap.version}')
+    # Change link to new folder
+    execute(f"ln -sfn {folder} {link}")
+    # Kill all VLBI applications attached to RabbitMQ
+
 
 
 if __name__ == '__main__':

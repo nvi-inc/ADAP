@@ -11,6 +11,7 @@ from http import HTTPStatus
 import pika
 import requests
 import json
+from pika.exceptions import ConnectionClosedByBroker, ConnectionClosed, AMQPError
 
 from utils import app, readDICT, saveDICT
 
@@ -68,15 +69,12 @@ class RMQclient:
 
     # Catch Ctrl+C
     def signal_handler(self, sig, frame):
-        self.end('killed by manager')
-        self.exit()
-
-    # Information send when application terminate
-    def end(self, msg):
-        pass
+        self.exit('killed by manager')
 
     # Make sure everything is clean before exit
     def exit(self, msg=None, prnt=False):
+        if msg:
+            self.end(msg)
         if prnt:
             print(f'failed {msg}' if msg else 'ended ok')
         sys.exit(0)
@@ -158,10 +156,10 @@ class RMQclient:
             print('Broker close', str(err))
 
     # Publish message to root exchange
-    def publish(self, routing_key, message, headers=None, callback_queue=None, corr_id=None, exchange=''):
+    def publish(self, routing_key, message, headers=None, callback_queue=None, corr_id=None, exchange=None):
         try:
-            if not exchange:
-                exchange = self.exchanges.log if routing_key == 'log' else self.exchanges.default
+            if exchange is None:
+                exchange = self.exchanges.default
             publish(self.conn, exchange, routing_key, message, headers, callback_queue, corr_id)
         except Exception as err:
             self.problem(str(err))
@@ -182,7 +180,7 @@ class RMQclient:
     def logit(self, level, msg):
         header = deepcopy(self.header)
         header['level'], header['time'] = level, datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S.%f')[:-4]
-        self.publish('log', msg, header)
+        self.publish('log', msg, header, exchange=self.exchanges.log)
 
     # Information send when application start
     def begin(self):
@@ -277,6 +275,7 @@ class Worker(RMQclient):
         self.timeout, self.initial_timeout, self.constant_timeout, self.timeout_id = 21600, 0, False, None
         # Flag to reset time-out when message have been processed
         self.reset_timeout, self.attempts, self.exclusive_queue = True, 0, False
+        self.monitor_channel = None
 
     # Jump to next interval
     @staticmethod
@@ -302,7 +301,7 @@ class Worker(RMQclient):
         try:
             self.conn.process_data_events(0)
         except Exception as err:
-            self.exit('PROCESS_EVENTS', str(err))
+            self.exit(f"PROCESS_EVENTS {str(err)}")
 
     # Use connection to sleep 1 second.
     def sleep_1sec(self):
@@ -338,7 +337,7 @@ class Worker(RMQclient):
             self.notify(f'{self.header["pid"]} tried to reconnect {self.attempts+1:d} {self.consumer_tag}')
         if self.attempts > 100:
             self.notify(f'Too many connect retries.\n{msg}', wait=False)
-            self.exit()
+            self.exit('Too many connect retries')
         # Sleep few seconds before trying to reconnect
         time.sleep(5)
 
@@ -358,8 +357,7 @@ class Worker(RMQclient):
                 channel.queue_declare(queue=self.listen_queue, exclusive=True)
             except Exception as err:
                 self.notify(f'Exclusive queue exists! {str(err)}', wait=False)
-                self.end('Exclusive queue exists')
-                self.exit()
+                self.exit('Exclusive queue exists')
 
     # Callback function for timeout signal
     def on_timeout(self):
@@ -379,13 +377,13 @@ class Worker(RMQclient):
     # Clean consumers. Not using heartbeat so must clean old connection using customer tag
     def clean_consumer(self):
         if self.consumer_tag: # Use API to delete old connection
-            api = API(self.args)
+            api = API()
             for consumer in api.get_items('consumers'):
                 if consumer['consumer_tag'] == self.consumer_tag:
-                    connection = consumer.get('connection_name', '')
-                    if connection:
-                        ok, _ = api.delete('connections/{}'.format(connection))
-                        self.notify('{} Consumer {} has{} been deleted'.format(self.listen_queue, self.consumer_tag, '' if ok else ' NOT'))
+                    if connection := consumer.get('connection_name', None):
+                        ok, _ = api.delete(f'connections/{connection}')
+                        self.notify(f"{self.listen_queue} Consumer {self.consumer_tag} "
+                                    f"has{'' if ok else ' NOT'} been deleted")
             self.consumer_tag = None
 
     # Keep consumer tag if need to delete
@@ -405,12 +403,12 @@ class Worker(RMQclient):
             self.monitor_channel.basic_consume(self.listen_queue, self.msg_received)
             self.set_consumer(self.monitor_channel)
             self.monitor_channel.start_consuming()
-        except pika.exceptions.ConnectionClosedByBroker:
+        except ConnectionClosedByBroker:
             self.notify('Connection closed by server', wait=False)
-            self.exit()
-        except pika.exceptions.ConnectionClosed:
+            self.exit('Connection closed by server')
+        except ConnectionClosed:
             self.reconnect('Connection closed)')
-        except pika.exceptions.AMQPError as e:
+        except AMQPError as e:
             self.reconnect('AMQError [{}]'.format(str(e)))
 
     # Process received message. Overriden by derived classes
@@ -427,8 +425,8 @@ class Worker(RMQclient):
             self.conn.remove_timeout(self.timeout_id)
         if body.decode().strip().lower() == 'stop':  # close connection on receiving stop message
             ch.basic_ack(delivery_tag=method.delivery_tag)
-            self.end('stopped by ADAP manager')
-            self.exit()
+            #self.end('stopped by ADAP manager')
+            self.exit('stopped by ADAP manager')
         else: # Process message
             self.process_msg(ch, method, properties, body)
             ch.basic_ack(delivery_tag=method.delivery_tag)

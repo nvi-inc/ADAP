@@ -1,7 +1,8 @@
-import re
 from datetime import datetime
+import re
 
 from utils import app
+
 
 
 class CorrNotes:

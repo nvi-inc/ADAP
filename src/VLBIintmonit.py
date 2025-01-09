@@ -34,15 +34,15 @@ class VGOSdbMonit(Worker):
 
     # Information send when application start
     def begin(self):
-        start = 'now' if datetime.utcnow() > self.start_monitoring else self.start_monitoring.strftime(' sleeping until (%H:%M)')
+        start = 'now' if datetime.utcnow() > self.start_monitoring \
+            else self.start_monitoring.strftime('sleeping until (%H:%M)')
         self.logit('BEGIN', f'monitoring {self.title} {start}')
 
     # Log reason for termination and exit
     def terminate(self, reason):
         if not self.conn:
             self.connect()  # Connect to RabbitMQ to send message
-        self.end(f'{self.title} {reason}' if self.session else reason)
-        self.exit()
+        self.exit(f'{self.title} {reason}' if self.session else reason)
 
     #  Find vgosdb file from list of server sites
     def find_vgosdb(self, log_it, send_warning):
@@ -101,7 +101,7 @@ class VGOSdbMonit(Worker):
         try:
             load_servers()
             if self.find_vgosdb(log_it, send_warning):
-                self.terminate('found vgodDb file!')
+                self.terminate('found vgosDB file!')
         except Exception as err:
             msg = f'{self.title} problem {str(err)}'
             self.critical(msg)

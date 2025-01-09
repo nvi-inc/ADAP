@@ -41,29 +41,26 @@ class Logger(Worker):
     def __init__(self):
         super().__init__()
         self.filter = self.logger = None
-        self.exit_on_demand = None
         self.set_start_time('now')
 
     # Overwrite exit to make sure it is logged before exiting
-    def exit(self):
-        if self.exit_on_demand:
-            sys.exit(0)
-        return
+    def exit(self, msg=None, prnt=False):
+        msg = msg or 'Unknown reason'
+        self.logger.log(logging.getLevelName('END'), msg)
+        sys.exit(0)
 
     # Set special logger information for filtering information
     def begin(self):
         # Set logger dictionary
         logger_config = readDICT(os.path.expanduser(app.args.logger))
         logging.config.dictConfig(logger_config)
-        self.exit_on_demand = logger_config.get('exit_on_demand', False)
 
         # Add custom levels
-        [logging.addLevelName(code, name) for name, code in logger_config['levels'].items()]
-
+        for name, code in logger_config['levels'].items():
+            logging.addLevelName(code, name)
         # Add the custom filter
         self.filter, self.logger = ContextFilter(), logging.getLogger('default')
         self.logger.addFilter(self.filter)
-
         # Add special functions for rotator
         for hd in self.logger.handlers:
             if isinstance(hd, logging.handlers.RotatingFileHandler):

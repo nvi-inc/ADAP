@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# Execute setup script in same folder
+source /sgpvlbi/progs/adap_v2/scripts/setup
+#
+# Execute VLBImonit.py
+python $APP_DIR/src/tools/kill.py -c $CONFIG_DIR/vlbi2023a.toml $@
