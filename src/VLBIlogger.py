@@ -26,7 +26,6 @@ class ContextFilter(logging.Filter):
         return True
 
 
-
 # Functions needed to created file rotator with gzip compression
 def rotator(source, destination):
     folder = os.path.dirname(destination)

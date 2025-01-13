@@ -239,6 +239,7 @@ class CorrelatorReport:
                 if paragraph or not self.session.is_intensive:
                     clean_notes[code] = paragraph
 
+
             if self.session.has_vlba:  # Check if vlba files are available
                 cal = self.session.file_path('vlbacal')
                 warning = None
