@@ -5,4 +5,4 @@ SCRIPT_DIR=$( dirname "${BASH_SOURCE[0]}" )
 source $SCRIPT_DIR/setup
 
 # Execute
-python $APP_DIR/src/ivsdb/ -c $CONFIG_DIR/vlbi.toml $@
+python $APP_DIR/src/ivsdb/ -c $ADAP_CONFIG $@

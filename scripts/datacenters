@@ -4,5 +4,5 @@
 SCRIPT_DIR=$( dirname "${BASH_SOURCE[0]}" )
 source $SCRIPT_DIR/setup
 
-# Execute VLBImonit.py
-nohup python $APP_DIR/src/VLBIdatacenters.py -c $CONFIG_DIR/vlbi.toml -q VLBIdatacenters > $PROBLEM_DIR/${0##*/}.txt 2>&1 &
+# Execute
+nohup python $APP_DIR/src/VLBIdatacenters.py -c $ADAP_CONFIG -q VLBIdatacenters > $PROBLEM_DIR/${0##*/}.txt 2>&1 &

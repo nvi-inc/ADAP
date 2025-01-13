@@ -214,7 +214,7 @@ class Session(Base):
 
     def file_name(self, code, sta=''):
         fmt = getattr(app.FileCodes, code, '{ses}{sta}.{code}')
-        return fmt.format(ses=self.code, sta=sta.lower(), code=code)
+        return fmt.format(ses=self.code.lower(), sta=sta.lower(), code=code)
 
     def file_path(self, code, sta=''):
         name = self.file_name(code, sta)

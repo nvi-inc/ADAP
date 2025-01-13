@@ -5,4 +5,4 @@ SCRIPT_DIR=$( dirname "${BASH_SOURCE[0]}" )
 source $SCRIPT_DIR/setup
 
 # Execute 
-nohup python $APP_DIR/src/VLBIvgosdb.py -c $CONFIG_DIR/vlbi2023a.toml -q VLBIvgosdb > $PROBLEM_DIR/${0##*/}.txt 2>&1 &
+nohup python $APP_DIR/src/VLBIvgosdb.py -c $ADAP_CONFIG -q VLBIvgosdb > $PROBLEM_DIR/${0##*/}.txt 2>&1 &

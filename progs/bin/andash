@@ -1,11 +1,10 @@
 #!/bin/bash
 #
-# Execute setup script in same folder
-SCRIPT_DIR=/sgpvlbi/progs/adap_v2/scripts #$( dirname "${BASH_SOURCE[0]}" )
-source $SCRIPT_DIR/setup
+# Execute setup script
+source /sgpvlbi/progs/set_adap
 #
 # Set XDG tempopary folder for sudo_user
 export XDG_RUNTIME_DIR=/tmp/runtime-$ME
 #
-# Execute VLBImonit.py
-nohup python $APP_DIR/src/tools/andash.py -c $CONFIG_DIR/vlbi2023a.toml > $PROBLEM_DIR/${0##*/}.$ME.txt 2>&1 &
+# Execute
+nohup python $APP_DIR/src/tools/andash.py -c $ADAP_CONFIG > $PROBLEM_DIR/${0##*/}.$ME.txt 2>&1 &

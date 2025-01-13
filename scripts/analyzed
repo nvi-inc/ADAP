@@ -5,4 +5,4 @@ SCRIPT_DIR=$( dirname "${BASH_SOURCE[0]}" )
 source $SCRIPT_DIR/setup
 
 # Execute
-python $APP_DIR/src/tools/analyzed.py -c $CONFIG_DIR/vlbi.toml $@
+python $APP_DIR/src/tools/analyzed.py -c $ADAP_CONFIG $@

@@ -98,8 +98,13 @@ def make_version(root, adap):
     link = Path(root, f'adap_v{adap.version}')
     # Change link to new folder
     execute(f"ln -sfn {folder} {link}")
+    # Copy set_adap scripts
+    for script in ('set_adap', 'set_adap.csh'):
+        if not Path(root, script):
+            execute(f"cp {Path(link, 'progs', script)} {root}")
+            execute(f"chmod 775 {Path(root, script)}")
     # Copy latest version of vkill to bin directory
-    execute(f"cp {Path(folder, 'bin', 'vkill')} {Path(root, 'bin')}")
+    execute(f"cp {Path(link, 'progs', 'bin', 'vkill')} {Path(root, 'bin')}")
     execute(f"chmod 775 {Path(root, 'bin', 'vkill')}")
     # Kill all VLBI applications attached to RabbitMQ
     print(execute('vkill all'))

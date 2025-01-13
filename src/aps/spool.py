@@ -399,10 +399,8 @@ class Spool(TEXTfile):
             for line in file.readlines():
                 code = None
                 if (run := get_run(line)) and run['id'].strip() != self.runs[0].run_id:
-                    print('Not same run id', run['id'].strip(), self.runs[0].run_id)
                     return
                 elif (database := get_dbase(line)) and database['name'] != self.runs[0].DB_NAME:
-                    print('Not same database', database['name'].strip(), self.runs[0].DB_NAME)
                     return
                 elif matched := match(line):
                     d = matched.groupdict()

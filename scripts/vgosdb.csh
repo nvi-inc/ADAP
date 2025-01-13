@@ -11,6 +11,4 @@ setenv XDG_RUNTIME_DIR  /tmp/runtime-$SUDO_USER
 #
 setenv NUSOLVE_AUTO "ADAP"
 
-#nohup python $APP_DIR/src/VLBIvgosdb.py -c $CONFIG_DIR/vlbi2023.toml -q VLBIvgosdb >& $PROBLEM_DIR/"vgosdb.txt" &
-
-nohup python $APP_DIR/src/VLBIvgosdb.py -c $CONFIG_DIR/vlbi2023a.toml -q VLBIvgosdb >& $PROBLEM_DIR/"vgosdb.txt" &
+nohup python $APP_DIR/src/VLBIvgosdb.py -c $ADAP_CONFIG -q VLBIvgosdb >& $PROBLEM_DIR/"vgosdb.txt" &

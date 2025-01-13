@@ -11,15 +11,17 @@ from schedule import get_schedule
 
 # Read correlator report, Report is stored as text.
 class CorrelatorReport:
-    def __init__(self, path):
+    def __init__(self, path, correlated=None):
         self.path = Path(path) if isinstance(path, str) else path
         self.ses_id, self.db_name = 'unknown', 'unknown'
         self.is_template, self.text = False, ''
         self.format_version = None
+        self.correlated = correlated or []
         url, tunnel = app.get_dbase_info()
         with IVSdata(url, tunnel) as dbase:
             self.session = dbase.get_session(self.path.stem)
             self._names, self._name_dict = dbase.get_station_names(), dbase.get_station_name_dict()
+            self.codes = set([code.capitalize() for code in dbase.get_stations()])
 
         rejected = app.Applications.APS['CorrNotes']
         self.REJWords, self.REJExact = rejected['words'], rejected['exact']
@@ -127,33 +129,28 @@ class CorrelatorReport:
         return dict(sorted(notes.items()))
 
     def decode_v3_format(self):
-        keys = {code: name for name, code in self.get_name_dict().items()}
-        notes = defaultdict(list)
+        notes, extra = defaultdict(list), defaultdict(list)
 
         if info := re.search(r'\+STATION(.*)\+NOTES(.*)\+CLOCK(.*)', self.text, re.DOTALL):
             names = [values for line in info.groups()[0].splitlines()
                      if not line.startswith('*') and len(values := line.split()) == 3]
-            stations = {code: keys.get(code, name) for (code, name, _) in names if code in keys}
+            stations = {code: sta_name for (code, sta_name, _) in names if code in self.codes}
+            key = lambda s : f"{stations[s]:8s}({s.capitalize()})"
             for line in info.groups()[1].splitlines():
                 if line and not line.startswith('*'):
                     if (words := line.split())[0] in stations:
-                        notes[stations[words[0]]].append(' '.join(words[1:]))
+                        notes[key(words[0])].append(' '.join(words[1:]))
                     elif words[0] == '-' and 'uploaded' not in words:
-                        notes['-'].append(' '.join(words[1:]))
-                    elif sta_list := [stations[code] for code in words[0].split('-') if code in stations]:
-                        notes['-'.join(sta_list)].append(' '.join(words[1:]))
+                        extra['-'].append(' '.join(words[1:]))
+                    elif sta_list := [key(code) for code in words[0].split('-') if code in stations]:
+                        extra['-'.join(sta_list)].append(' '.join(words[1:]))
 
-            vlba_log = self.session.file_path('vlbacal') if self.session.has_vlba else None
-            has_vlba_log = vlba_log.exists() if vlba_log else True
-
-            for code, name in stations.items():
+            for code in stations.keys():
                 if not self.session.log_path(code).exists():
-                    if code not in app.VLBA.stations:
-                        notes[name].append('No log')
-                    elif not self.session.is_intensive and not has_vlba_log:
-                        notes[name].append(f'{vlba_log.name} not available')
-                notes[name]
-        return dict(sorted(notes.items()))
+                    if code in self.correlated and code not in app.VLBA.stations:
+                        notes[key(code)].append('No log')
+
+        return dict(sorted(notes.items())) | extra
 
     def clean(self, rej_words, rej_exact, paragraph):
         get_missed = re.compile(r'(\d{3}\-\d{4}[ a-zA-Z])(\-\-|through|and) (\d{3}\-\d{4}[ a-zA-Z]*)').findall
@@ -221,12 +218,12 @@ class CorrelatorReport:
 
     # Read correlator report to extract notes
     def get_notes(self, apply_filter=True):
+        clean_notes = {}
         try:
             if not self.text:
                 self.read()
             rejected = app.Applications.APS['CorrNotes']
             rej_words, rej_exact = rejected['words'], rejected['exact']
-            codes = {code: f'{code:<8s}({sta_id.capitalize()})' for code, sta_id in self.get_name_dict().items()}
 
             if self.format_version == 'missing':  # No corr file use list of station
                 notes = self.no_corr_file()
@@ -234,27 +231,31 @@ class CorrelatorReport:
                 notes = self.decode_v3_format()
             else:  # Old correlator report
                 notes = self.decode_old_format()
-            clean_notes = {}
             for code, comments in notes.items():
                 paragraph = ' '.join([f'{comment}{"" if comment.endswith(".") else "."}' for comment in comments
                                       if comment.strip()]).strip()
                 if apply_filter:
                     paragraph = self.clean(rej_words, rej_exact, paragraph)
-                if paragraph:
-                    clean_notes[code if code in ('-', '--') else codes[code]] = paragraph
-            # Add note if intensive has vlba station and vlba.log file is not there
-            warnings = []
-            if self.session.has_vlba and not (log := self.session.file_path('vlbacal')).exists():
-                warnings.append(log.name)
-            if not (log := self.session.file_path('corr')).exists():
-                warnings.append(log.name)
-            if warnings:
-                clean_notes['Warning     '] = \
-                    f"{' and '.join(warnings)} {'is' if len(warnings) == 1 else 'are'} missing"
+                if paragraph or not self.session.is_intensive:
+                    clean_notes[code] = paragraph
+
+            if self.session.has_vlba:  # Check if vlba files are available
+                cal = self.session.file_path('vlbacal')
+                warning = None
+                if self.session.is_intensive:
+                    missing = [cal.name] if cal.exists() else []
+                    if not (cor := self.session.file_path('corr')).exists():
+                        missing.append(cor.name)
+                    warning = f"{' and '.join(missing)} {'is' if len(missing) == 1 else 'are'}" if missing else None
+                elif not cal.exists():
+                    warning = f"{cal.name} is missing"
+                if warning:
+                    clean_notes["Warning     "] = warning
 
             return clean_notes
-        except:
-            return {}
+        except Exception as err:
+            print(str(err))
+            return clean_notes
 
 
 if __name__ == '__main__':

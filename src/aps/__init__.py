@@ -159,7 +159,7 @@ class APS:
             self.processing.Comments['CorrNotes'] = True
             # Insert lines in problems
             with CorrelatorReport(self.session.file_path('corr'), self.vgosdb.station_list) as corr:
-                for name, comment in corr.get_notes(apply_filter=self.session.type != 'intensive').items():
+                for name, comment in corr.get_notes(apply_filter=not self.session.is_intensive).items():
                     prefix = name
                     for line in split_line(comment):
                         problems.append(f'{prefix} {line}')

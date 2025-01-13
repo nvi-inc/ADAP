@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+nvi="nvi-vlbi-2"
+export ME="${SUDO_USER:-${USER}_user}"
+#
+export APP_DIR=/sgpvlbi/progs/adap_v2
+
+if [ $HOSTNAME == $nvi ]; then
+  export CONFIG_DIR=/sgpvlbi/progs/config/adap_nvi
+  export PROBLEM_DIR=/sgpvlbi/progs/logs/adap_nvi/problems
+else
+  export CONFIG_DIR=/sgpvlbi/progs/config/adap
+  export PROBLEM_DIR=/sgpvlbi/progs/logs/adap/problems
+fi
+
+export PYTHONPATH=$APP_DIR/src
+#
+export XDG_RUNTIME_DIR=/tmp/runtime-$ME
+#
+export ADAP_CONFIG=$CONFIG_DIR/vlbi2023a.toml
+#
+source $APP_DIR/venv/bin/activate

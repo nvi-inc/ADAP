@@ -1,7 +1,6 @@
 #!/bin/bash
 #
-SCRIPT_DIR=/sgpvlbi/progs/adap_v2/scripts #$( dirname "${BASH_SOURCE[0]}" )
-source $SCRIPT_DIR/setup
+source=/sgpvlbi/progs/set_adap
 #
 python $APP_DIR/src/tools/mailit.py $@
 
