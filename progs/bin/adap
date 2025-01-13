@@ -112,6 +112,30 @@ def make_version(root, adap):
     execute(f"{Path(link, 'scripts/watchdog')}")
 
 
+def get_apps(folder, path):
+    from tools.affected import find_apps
+    print('get apps', folder, path)
+def update_version(root, adap):
+    # Check that github repository has same version
+    check_github(adap)
+    # Check if folder and git exist
+    if not (folder := Path(root, f'adap_v{adap}')).exists():
+        raise Exception(f"{folder} does not exist! Use: adap make {adap}")
+    if not Path(folder, '.git').exists():
+        raise Exception(f"No .git directory in {folder}")
+    # Move to folder and execute uv to create virtual environment
+    os.chdir(folder)
+    # Pull git repository
+    for line in execute(cmd := f'git pull {repository}').splitlines():
+        line = line.strip()
+        if line.strip().startswith('progs/'):
+            print('modified', line)
+        elif line.startswith('src/'):
+            get_apps(root, line)
+        else:
+            print('not used', line)
+
+
 if __name__ == '__main__':
     import argparse
 
@@ -131,6 +155,8 @@ if __name__ == '__main__':
             raise Exception('invalid version numbering')
         if args.action == 'make':
             make_version(args.root, version)
+        else:
+            update_version(args.root, version)
     except Exception as exc:
         print(f'Problem running adap {args.action} {args.version}')
         print(str(exc))

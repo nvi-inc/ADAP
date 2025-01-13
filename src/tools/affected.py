@@ -2,14 +2,15 @@ import inspect
 from pathlib import Path
 from subprocess import Popen, PIPE
 from importlib import import_module, reload
-from typing import List, Tuple
+from typing import List, Tuple, Set
 
 
 def grep(folder: Path, cmd: str):
     try:
         full_cmd = f'grep -rE --include \*.py \"{cmd}\" {folder}'
-        print(full_cmd)
+        #print(full_cmd)
         st_out, _ = Popen(full_cmd, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE).communicate()
+        #print(st_out.decode('utf-8'))
         return st_out.decode('utf-8').splitlines()
     except:
         return []
@@ -18,6 +19,7 @@ def grep(folder: Path, cmd: str):
 def get_module_items(path):
     items = set()
     module_name = f'{path.parent.name}.{path.stem}'
+    #print('module', module_name)
     the_module = import_module(module_name)
     for name, obj in the_module.__dict__.items():
         if not (obj_module := inspect.getmodule(obj)) or obj_module.__name__ == module_name:
@@ -40,7 +42,7 @@ def find_files(folder, path):
     return sorted(set(files))
 
 
-def find_apps(folder: Path, package: str, name: str) -> List[Path]:
+def find_apps(folder: Path, package: str, name: str) -> List[str]:
     if not (path := Path(folder, package, f'{name}.py')).is_file():
         return []
 
@@ -57,9 +59,7 @@ def find_apps(folder: Path, package: str, name: str) -> List[Path]:
             break
         path = to_check.pop(0)
 
-    print('\n'.join([str(file) for file in processed]))
-    print('\n'.join([str(file) for file in applications]))
-    return f'processed {len(processed)} files. Found {len(applications)} apps'
+    return [path.name for path in applications]
 
 
 if __name__ == '__main__':
@@ -70,9 +70,9 @@ if __name__ == '__main__':
     parser.add_argument('path')
 
     args = parser.parse_args()
-    folder = Path(args.folder)
-    path = Path(folder, args.path)
-    package, name = path.parent.name, path.stem
-    if package == 'aps' and name != '__main__':
-        name = '__init__'
-    print(path, find_apps(folder, package, name))
+    full_path = Path(args.folder, args.path)
+    if (folder := full_path.parent.parent).name == 'src':
+        package, name = full_path.parent.name, full_path.stem
+        if package == 'aps' and name != '__main__':
+            name = '__init__'
+        print(full_path, '\n'.join(find_apps(folder, package, name)))
