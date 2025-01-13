@@ -126,7 +126,9 @@ def update_version(root, adap):
     # Move to folder and execute uv to create virtual environment
     os.chdir(folder)
     # Pull git repository
-    for line in execute(cmd := f'git pull {repository}').splitlines():
+    ans = execute(cmd := f'git pull {repository}')
+    print(ans)
+    for line in ans.splitlines():
         line = line.strip()
         if line.strip().startswith('progs/'):
             print('modified', line)
