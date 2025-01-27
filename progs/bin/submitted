@@ -4,4 +4,4 @@
 source /sgpvlbi/progs/set_adap
 #
 # Execute
-python $APP_DIR/src/tools -c $ADAP_CONFIG/vlbi.toml -submitted
+python $APP_DIR/src/tools -c $ADAP_CONFIG -submitted

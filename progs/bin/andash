@@ -3,7 +3,7 @@
 # Execute setup script
 source /sgpvlbi/progs/set_adap
 #
-# Set XDG tempopary folder for sudo_user
+# Set XDG temporary folder for sudo_user
 export XDG_RUNTIME_DIR=/tmp/runtime-$ME
 #
 # Execute

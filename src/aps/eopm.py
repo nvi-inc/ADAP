@@ -105,6 +105,7 @@ class EOPM(EOP):
         if not (spool := read_spool(initials=self.initials, db_name=vgosdb.name)):
             self.add_error(f'Error reading spool file SPLF{self.initials}')
             return False, None
+
         # Replace RMS for UT1 values if vgos session:
         if self.run_simul and not self.simulated_rms(vgosdb, spool):
             return False, None
@@ -120,7 +121,7 @@ class EOPM(EOP):
         if not self.get_opa_code('EOPM_ONLY_SINGLE_BASELINE') == 'YES':
             arc_lines.append(self.format_arc_line(wrapper, session.code))
         # Add exclusions to arc_line
-        if len(baselines) > 1:
+        if len(stations) > 2:
             for name in baselines:
                 excluded = list(set(stations) - set(name.split('|')))
                 fmt = '{:100s} STA_EXCLUDE {:2d} ' + '{:8s}  ' * len(excluded) + ' ! {}'
@@ -146,5 +147,5 @@ class EOPM(EOP):
         prefix, suffix = os.path.splitext(os.path.basename(eopm))
         tpath = self.get_tmp_file(prefix+'_', suffix)
         # Create tmp file and update global file
-        eob_to_eops(eob, tpath)
+        eob_to_eops(eob, tpath, is_eopm=True)
         return self.update_global_file(tpath, eopm)

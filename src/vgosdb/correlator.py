@@ -7,25 +7,15 @@ from datetime import datetime
 
 from utils import app
 from ivsdb import IVSdata
-from schedule import get_schedule
+
 
 # Read correlator report, Report is stored as text.
 class CorrelatorReport:
-    def __init__(self, path, correlated=None):
+    def __init__(self, path):
         self.path = Path(path) if isinstance(path, str) else path
         self.ses_id, self.db_name = 'unknown', 'unknown'
         self.is_template, self.text = False, ''
         self.format_version = None
-        self.correlated = correlated or []
-        url, tunnel = app.get_dbase_info()
-        with IVSdata(url, tunnel) as dbase:
-            self.session = dbase.get_session(self.path.stem)
-            self._names, self._name_dict = dbase.get_station_names(), dbase.get_station_name_dict()
-            self.codes = set([code.capitalize() for code in dbase.get_stations()])
-
-        rejected = app.Applications.APS['CorrNotes']
-        self.REJWords, self.REJExact = rejected['words'], rejected['exact']
-        self.old_names = {'NY ALESUND': 'NYALESUND', 'FORTALEZA': 'FORTLEZA', 'ALGONQUIN': 'ALGOPARK'}
 
     def __enter__(self):
         self.read()
@@ -83,17 +73,7 @@ class CorrelatorReport:
         self.write(path)
         return True, 'updated'
 
-    def get_names(self):
-        return self._names
-
-    def get_name_dict(self):
-        return self._name_dict
-
-    def decode_old_format(self):
-        network = self.get_names()
-        notes = defaultdict(list)
-        clean = re.compile(r'[()/-]').sub
-
+    def decode_old_format(self, network, names):
         # Make sure the old names are not used
         def clean_old_names(text):
             for old_name, new_name in {'NY ALESUND': 'NYALESUND', 'FORTALEZA': 'FORTLEZA',
@@ -105,52 +85,48 @@ class CorrelatorReport:
             if (text := text.strip()) and (words := text.split())[0] in network:
                 return words[0], text.split(':', 1)[1].strip()
             return '', text.strip()
-
+        comments = {code: [''] for code in network}
         if info := re.search(r'\+STATION[ _]NOTES(.*)', self.text, re.DOTALL):
             lines = list(itertools.takewhile(lambda x: not x.startswith(('+', '$')), info.groups()[0].splitlines()))
             last = None
             for line in lines:
                 code, comment = decode_line(clean_old_names(line))
                 if code:
-                    last = code
+                    last = names[code]
                 if last and comment:
-                    notes[last].append(comment)
+                    comments[last].append(comment)
 
-        return notes
+        return comments, {}
 
-    def no_corr_file(self):
-        def log_missing(sta):
-            return sta not in app.VLBA.stations and not self.session.log_path(sta.lower()).exists()
+    def no_corr_file(self, network):
+        return {code: '' for code in network}, {}
 
-        stations = list(get_schedule(self.session).stations['names'].keys())
-        names = self.get_name_dict()
-        notes = {name: ['No log' if log_missing(names.get(name, name)) else ''] for name in stations}
-
-        return dict(sorted(notes.items()))
-
-    def decode_v3_format(self):
-        notes, extra = defaultdict(list), defaultdict(list)
+    def decode_v3_format(self, network, codes):
+        comments, extra = defaultdict(list), defaultdict(list)
+        for code in network:
+            comments[code].append('')
 
         if info := re.search(r'\+STATION(.*)\+NOTES(.*)\+CLOCK(.*)', self.text, re.DOTALL):
-            names = [values for line in info.groups()[0].splitlines()
-                     if not line.startswith('*') and len(values := line.split()) == 3]
-            stations = {code: sta_name for (code, sta_name, _) in names if code in self.codes}
-            key = lambda s : f"{stations[s]:8s}({s.capitalize()})"
+            for line in info.groups()[0].splitlines():
+                if not line.startswith('*') and len(values := line.split()) == 3:
+                    if (code := values[0]) in codes and code not in network:
+                        network[code] = values[1]
+                        comments[code].append('')
+
             for line in info.groups()[1].splitlines():
                 if line and not line.startswith('*'):
-                    if (words := line.split())[0] in stations:
-                        notes[key(words[0])].append(' '.join(words[1:]))
-                    elif words[0] == '-' and 'uploaded' not in words:
-                        extra['-'].append(' '.join(words[1:]))
-                    elif sta_list := [key(code) for code in words[0].split('-') if code in stations]:
-                        extra['-'.join(sta_list)].append(' '.join(words[1:]))
+                    try:
+                        code, comment = line.split(maxsplit=1)
+                        if code in network:
+                            comments[code].append(comment)
+                        elif code == '-' and 'uploaded' not in comment:
+                            extra['-'].append(comment)
+                        elif sta_list := [sta for sta in code.split('-') if code in network]:
+                            extra['|'.join(sta_list)].append(comment)
+                    except ValueError:
+                        pass
 
-            for code in stations.keys():
-                if not self.session.log_path(code).exists():
-                    if code in self.correlated and code not in app.VLBA.stations:
-                        notes[key(code)].append('No log')
-
-        return dict(sorted(notes.items())) | extra
+        return comments, extra
 
     def clean(self, rej_words, rej_exact, paragraph):
         get_missed = re.compile(r'(\d{3}\-\d{4}[ a-zA-Z])(\-\-|through|and) (\d{3}\-\d{4}[ a-zA-Z]*)').findall
@@ -217,7 +193,17 @@ class CorrelatorReport:
         return '. '.join(phrases) if phrases else ''
 
     # Read correlator report to extract notes
-    def get_notes(self, apply_filter=True):
+    def get_notes(self, session, vgosdb, apply_filter=True):
+        url, tunnel = app.get_dbase_info()
+        with IVSdata(url, tunnel) as dbase:
+            name2code = dbase.get_station_name_dict()
+        # There are 2 EFLSBERG codes (Ed, Ef) and names dictionary has only one value Ef.
+        name2code['EFLSBERG'] = 'Eb'  # Ef is not in any session
+        code2name = dict((code.capitalize(), name) for name, code in name2code.items())
+
+        network = {name2code[name]: name for name in vgosdb.station_list}
+        network.update({code.capitalize(): code2name[code.capitalize()]  for code in session.included})
+
         clean_notes = {}
         try:
             if not self.text:
@@ -226,36 +212,48 @@ class CorrelatorReport:
             rej_words, rej_exact = rejected['words'], rejected['exact']
 
             if self.format_version == 'missing':  # No corr file use list of station
-                notes = self.no_corr_file()
+                notes, extra = self.no_corr_file(network)
             elif self.format_version:  # V3 correlator format
-                notes = self.decode_v3_format()
+                notes, extra = self.decode_v3_format(network, code2name)
             else:  # Old correlator report
-                notes = self.decode_old_format()
+                notes, extra = self.decode_old_format(network, name2code)
+            # Add no log comment
+            for code, name in network.items():
+                if not session.log_path(code).exists():
+                    if name in vgosdb.station_list and code not in app.VLBA.stations:
+                        notes[code].append('No log')
+
+            notes =dict(sorted([(f"{network[code]}({code})", comments) for code, comments in notes.items()]))
+            if extra:
+                notes[''] = ''
+            for word, comments in extra.items():
+                if word == '-':
+                    notes['Network'] = comments
+                elif '|' in word:
+                    keyword = '-'.join([f"{network[code]}({code})" for code in word.split('|')])
+                    notes[keyword] = comments
             for code, comments in notes.items():
                 paragraph = ' '.join([f'{comment}{"" if comment.endswith(".") else "."}' for comment in comments
                                       if comment.strip()]).strip()
                 if apply_filter:
                     paragraph = self.clean(rej_words, rej_exact, paragraph)
-                if paragraph or not self.session.is_intensive:
+                if paragraph or not session.is_intensive:
                     clean_notes[code] = paragraph
 
-
-            if self.session.has_vlba:  # Check if vlba files are available
-                cal = self.session.file_path('vlbacal')
-                warning = None
-                if self.session.is_intensive:
-                    missing = [cal.name] if cal.exists() else []
-                    if not (cor := self.session.file_path('corr')).exists():
-                        missing.append(cor.name)
-                    warning = f"{' and '.join(missing)} {'is' if len(missing) == 1 else 'are'}" if missing else None
-                elif not cal.exists():
-                    warning = f"{cal.name} is missing"
-                if warning:
-                    clean_notes["Warning     "] = warning
+            if session.has_vlba:  # Check if vlba and correlator files are available
+                cal = session.file_path('vlbacal')
+                missing = [] if cal.exists() else [cal.name]
+                if not (cor := session.file_path('corr')).exists():
+                    missing.append(cor.name)
+                if missing:
+                    clean_notes["Warning     "] = (f"{' and '.join(missing)} {'is' if len(missing) == 1 else 'are'} "
+                                                   f"missing") if missing else None
 
             return clean_notes
         except Exception as err:
+            import traceback
             print(str(err))
+            print(traceback.format_exc())
             return clean_notes
 
 
@@ -270,5 +268,5 @@ if __name__ == '__main__':
     args = app.init(parser.parse_args())
 
     with CorrelatorReport(args.path) as corr:
-        for name, comment in corr.get_notes(apply_filter=False).items():
-            print(name, comment)
+        for key, cmt in corr.get_notes(apply_filter=False).items():
+            print(key, cmt)

@@ -22,6 +22,7 @@ from aps.reports import AnalysisReport, AnalysisReportEditor
 
 logger = logging.getLogger('aps')
 
+
 class USR1signal(QTimer):
 
     def __init__(self, parent):
@@ -79,9 +80,7 @@ class QAPS(APS, QMainWindow):
             ErrorMessage(self.errors, critical=True)
             sys.exit(0)
 
-        # Read correlator notes and include in Problems
-        if self.appInfo.get('Notes', True):
-            self.extract_corr_notes()
+        # Include correlator notes in Problems
         self.processing_initials = self.appInfo.get('initials', ['', ''])[int(self.is_intensive)]
         self.box_for_initials = TextBox(self.processing_initials, readonly=False, min_size='WW')
         self.NASA, self.IVS = QRadioButton(self.ac_code), QRadioButton("IVS")
@@ -440,7 +439,10 @@ def print_report(arguments):
         print(f'No valid spool file for {aps.ses_id} {aps.db_name}')
         return
     is_ivs = aps.processing.check_agency()
-    ok, txt = aps.make_analysis_report(is_ivs, [], [], [])
+    problems = aps.processing.Comments.get('Problems', [])
+    parameterization = aps.processing.Comments.get('Parameterization', [])
+    other = aps.processing.Comments.get('Other', [])
+    ok, txt = aps.make_analysis_report(is_ivs, problems, parameterization, other)
     print(txt if ok else aps.errors)
 
 

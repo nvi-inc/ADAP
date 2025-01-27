@@ -4,7 +4,7 @@ unsetenv DISPLAY
 
 setenv SUDO_USER "oper"
 
-source /sgpvlbi/progs/adap_v2/scripts/setup.csh
+source /sgpvlbi/progs/se_adap.csh
 
 # Set XDG tempopary folder for sudo_user
 setenv XDG_RUNTIME_DIR  /tmp/runtime-$SUDO_USER

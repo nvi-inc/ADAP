@@ -1,8 +1,7 @@
 #!/bin/bash
 #
 # Execute setup script in same folder
-SCRIPT_DIR=$( dirname "${BASH_SOURCE[0]}" )
-source $SCRIPT_DIR/setup
+source /sgpvlbi/progs/set_adap
 
 # Execute app
 nohup python $APP_DIR/src/VLBIauxfiles.py -c $ADAP_CONFIG -q VLBIaux > $PROBLEM_DIR/${0##*/}.txt 2>&1 &

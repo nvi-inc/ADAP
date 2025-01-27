@@ -103,6 +103,7 @@ class Wrapper(TEXTfile):
 
     def get_var_info(self, key, directory=''):
         if key not in self.var_list:
+            print('VAR_LIST key', key)
             self.var_list[key] = {}
         info = self.var_list[key]
 

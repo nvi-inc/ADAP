@@ -1,7 +1,0 @@
-#!/bin/bash
-#
-unset DISPLAY
-
-source /sgpvlbi/progs/adap_v2/scripts/setup
-
-python $APP_DIR/src/vgosdb -c $CONFIG_DIR/vlbi.toml -g $@ 

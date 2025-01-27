@@ -1,8 +1,0 @@
-#!/bin/bash
-#
-# Execute setup script in same folder
-SCRIPT_DIR=$( dirname "${BASH_SOURCE[0]}" )
-source $SCRIPT_DIR/setup
-#
-# Execute
-python $APP_DIR/src/vgosdb/fetch.py -c $ADAP_CONFIG $@

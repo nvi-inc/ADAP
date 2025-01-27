@@ -115,6 +115,7 @@ def make_version(root, adap):
 def get_apps(folder, path):
     from tools.affected import find_apps
     print('get apps', folder, path)
+
 def update_version(root, adap):
     # Check that github repository has same version
     check_github(adap)
@@ -127,8 +128,13 @@ def update_version(root, adap):
     os.chdir(folder)
     # Pull git repository
     ans = execute(cmd := f'git pull {repository}')
-    print(ans)
+    if ans.startswith('Already up to date.'):
+        print('Already up to date.')
+        return
 
+    print(ans)
+    # Set PYTHONPATH variable
+    os.environ['PYTHONPATH'] = str(Path(folder, 'src'))
     for line in ans.splitlines():
         line = line.strip()
         if line.strip().startswith('progs/'):

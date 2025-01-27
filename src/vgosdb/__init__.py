@@ -326,8 +326,11 @@ class VGOSdb:
     # Get variable using var_list information
     def get_data(self, group, key, var_name, is_str=False):
         if rel_path := self.wrapper.var_list[group.lower()].get(key.lower(), ''):
+            print('rel_path', rel_path)
             path = os.path.join(self.folder, rel_path)
+            print('path', path)
             return self.get_utctime(path) if var_name == 'YMDHMS' else self.get_variable(path, var_name, is_str)
+        print('no rel_path')
         return np.ma.MaskedArray([])
 
     # Compile statistics for this sessions

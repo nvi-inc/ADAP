@@ -4,6 +4,11 @@ nvi="nvi-vlbi-2"
 export ME="${SUDO_USER:-${USER}_user}"
 #
 export APP_DIR=/sgpvlbi/progs/adap_v2
+# Check if development environment has been setup
+DEV_ENV="${DEV_ENV}"
+if [[ -d $DEV_ENV ]]; then
+  export APP_DIR=$DEV_ENV
+fi
 
 if [ $HOSTNAME == $nvi ]; then
   export CONFIG_DIR=/sgpvlbi/progs/config/adap_nvi

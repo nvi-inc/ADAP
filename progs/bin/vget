@@ -2,9 +2,9 @@
 #
 unsetenv DISPLAY
 
-source /sgpvlbi/progs/adap_v2/scripts/setup.csh
+source /sgpvlbi/progs/set_adap.csh
 
 setenv NUSOLVE_AUTO "VGET"
 
-python $APP_DIR/src/vgosdb -c $CONFIG_DIR/vlbi2023a.toml -g $argv 
+python $APP_DIR/src/vgosdb -c $ADAP_CONFIG -g $argv
 

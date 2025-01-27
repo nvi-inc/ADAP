@@ -30,7 +30,7 @@ class APS:
 
     max_length = 75
 
-    def __init__(self, param):
+    def __init__(self, param, read_corr=False):
         super().__init__()
         # List to store error messages
         self._errors, self.critical = [], False
@@ -83,6 +83,8 @@ class APS:
 
         if not self.spool:
             self.spool = read_spool(db_name=self.db_name, read_unused=True)
+        # Read correlator notes
+        self.extract_corr_notes(read_corr)
 
     # Add error in list of errors
     def add_error(self, err, critical=False):
@@ -142,7 +144,7 @@ class APS:
         return True
 
     # Extract notes from correlator report and insert in problems
-    def extract_corr_notes(self):
+    def extract_corr_notes(self, read_corr=False):
         # Recursively split lines longer than max_length
         def split_line(text):
             if len(text) < APS.max_length + 10 or ((index := text[:APS.max_length].rfind(' ')) == -1):
@@ -152,14 +154,15 @@ class APS:
             return lines
 
         # Check if something in the problem information
-        if not self.processing.Comments.get('CorrNotes', False):
+        if read_corr or not self.processing.Comments.get('CorrNotes', False):
             logger.info('extract comments from correlator notes')
             problems = self.processing.Comments['Problems']
             # Read correlator notes
             self.processing.Comments['CorrNotes'] = True
             # Insert lines in problems
-            with CorrelatorReport(self.session.file_path('corr'), self.vgosdb.station_list) as corr:
-                for name, comment in corr.get_notes(apply_filter=not self.session.is_intensive).items():
+            with CorrelatorReport(self.session.file_path('corr')) as corr:
+                for name, comment in corr.get_notes(self.session, self.vgosdb,
+                                                    apply_filter=self.session.type != 'intensive').items():
                     prefix = name
                     for line in split_line(comment):
                         problems.append(f'{prefix} {line}')

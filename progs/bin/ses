@@ -2,5 +2,5 @@
 #
 source /sgpvlbi/progs/set_adap
 
-python $APP_DIR/src/tools/toascii.py $@ 
+python $APP_DIR/src/tools -c $ADAP_CONFIG $1
 

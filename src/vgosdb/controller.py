@@ -73,7 +73,7 @@ class VGOSDBController:
 
         summary = self.vgosdb.summary(self.agency)
         vtype = 'problem' if app.args.test else self.vgosdb.type
-        vtype == 'intensive' if vtype == 'intensives' else vtype
+        vtype = 'intensive' if vtype == 'intensives' else vtype
         if vtype not in self.notifications or vtype == VGOSdb.Unknown:
             self.notify(f'{self.vgosdb.name} type was detected as {self.vgosdb.type}')
             vtype = 'problem'
@@ -94,7 +94,7 @@ class VGOSDBController:
             return  # Do not send email
 
         vtype = 'problem' if app.args.test else self.vgosdb.type
-        vtype == 'intensive' if vtype == 'intensives' else vtype
+        vtype = 'intensive' if vtype == 'intensives' else vtype
         if vtype not in self.notifications or vtype == VGOSdb.Unknown:
             self.notify(f'{self.vgosdb.name} type was detected as {self.vgosdb.type}')
             vtype = 'problem'
@@ -384,6 +384,7 @@ class VGOSDBController:
         summary.extend(['nuSolve solution summary', '-'*24, ''])
         # Run nuSolve
         ok, nusolve_ans = self.execute_nuSolve(options['cmd'].format(db_name=dbname))
+        err = nusolve_ans
         if ok:
             self.info(f'{dbname} - nuSolve ok')
             summary.append(nusolve_ans)
@@ -393,63 +394,69 @@ class VGOSDBController:
             self.info(f'{dbname} - aps {initials}')
             aps = APS(initials)
             if not aps.has_errors:
-                self.info(f'{dbname} - aps {aps.db_name} {aps.session.code} {aps.session.type}')
-                # Run all post nuSolve required processes
-                self.info(f'{dbname} - aps (A) {list(aps.processing.Actions.keys())}')
-                self.info(f'{dbname} - aps (A) {[info["required"] for info in aps.processing.Actions.values()]}')
-                self.info(f'{dbname} - aps (S) {list(aps.processing.Submissions.keys())}')
-                self.info(f'{dbname} - aps (S) {[info["required"] for info in aps.processing.Submissions.values()]}')
-                self.info(f'{dbname} - aps (ERR) {aps.errors}')
-                for action, info in aps.processing.Actions.items():
-                    if info['required']:
-                        self.info(f'{dbname} - aps {action}')
-                        if not aps.run_process(action, options['initials'], auto=True):
-                            self.warning(f'{dbname} - aps {action} failed')
-                            break
-                        else:
-                            summary.append(f'{action} done {aps.processing.done(action)}')
-                else:  # loop not stopped by break. Submit files
-                    for submission, info in aps.processing.Submissions.items():
+                try:
+                    self.info(f'{dbname} - aps {aps.db_name} {aps.session.code} {aps.session.type}')
+                    # Run all post nuSolve required processes
+                    self.info(f'{dbname} - aps (A) {list(aps.processing.Actions.keys())}')
+                    self.info(f'{dbname} - aps (A) {[info["required"] for info in aps.processing.Actions.values()]}')
+                    self.info(f'{dbname} - aps (S) {list(aps.processing.Submissions.keys())}')
+                    self.info(f'{dbname} - aps (S) {[info["required"] for info in aps.processing.Submissions.values()]}')
+                    self.info(f'{dbname} - aps (ERR) {aps.errors}')
+                    for action, info in aps.processing.Actions.items():
                         if info['required']:
-                            self.info(f'{dbname} - aps {submission}')
-                            if ans := aps.submit_results(submission.replace('SUBMIT-', '')):
-                                for file_name in ans:
-                                    aps.logit(f'{file_name} will be uploaded later')
-                                    summary.append(f'{submission} {aps.processing.done(submission)} - '
-                                                   f'{file_name} will be uploaded later')
-                            if aps.has_errors:
+                            self.info(f'{dbname} - aps {action}')
+                            if not aps.run_process(action, options['initials'], auto=True):
+                                self.warning(f'{dbname} - aps {action} failed')
                                 break
                             else:
-                                for file in submit.get_last_submission():
-                                    file_name = os.path.basename(file)
-                                    aps.logit(f'{file_name} submitted')
-                                    self.info(f'{dbname} - submitted {file_name}')
-                                    summary.append(f'{submission}: {aps.processing.done(submission)}'
-                                                   f' - {file_name} submitted')
-                    else:  # loop not stopped by break. Generate analysis report
-                        self.info(f'{dbname} - aps make analysis report')
-                        is_ivs = aps.processing.check_agency()
-                        ok, txt = aps.make_analysis_report(is_ivs, [], [], [], auto=analyst)
-                        if ok:
-                            aps.processing.TempReport = tempfile.NamedTemporaryFile(
-                                prefix='{}_report_'.format(aps.session.code), suffix='.txt', delete=False).name
-                            with open(aps.processing.TempReport, 'w') as out:
-                                out.write(txt)
-                            aps.logit('submit analysis report and spoolfile')
-                            ans = aps.submit_report(is_ivs)
-                            if not aps.has_errors:
-                                summary.append(f'{aps.processing.Reports[-1]} submitted')
-                                summary.append(f'{aps.processing.SpoolFiles[-1]} submitted')
-                                for file_name in ans:
-                                    aps.logit(f'{file_name} will be uploaded later')
-                                # Send email to IVS
-                                if msg := aps.send_analyst_email('last'):
-                                    aps.errors(f'Failed sending report {msg}')
+                                summary.append(f'{action} done {aps.processing.done(action)}')
+                    else:  # loop not stopped by break. Submit files
+                        for submission, info in aps.processing.Submissions.items():
+                            if info['required']:
+                                self.info(f'{dbname} - aps {submission}')
+                                if ans := aps.submit_results(submission.replace('SUBMIT-', '')):
+                                    for file_name in ans:
+                                        aps.logit(f'{file_name} will be uploaded later')
+                                        summary.append(f'{submission} {aps.processing.done(submission)} - '
+                                                       f'{file_name} will be uploaded later')
+                                if aps.has_errors:
+                                    break
                                 else:
-                                    summary.append('Analysis report sent to IVS mail')
+                                    for file in submit.get_last_submission():
+                                        file_name = os.path.basename(file)
+                                        aps.logit(f'{file_name} submitted')
+                                        self.info(f'{dbname} - submitted {file_name}')
+                                        summary.append(f'{submission}: {aps.processing.done(submission)}'
+                                                       f' - {file_name} submitted')
+                        else:  # loop not stopped by break. Generate analysis report
+                            self.info(f'{dbname} - aps make analysis report')
+                            is_ivs = aps.processing.check_agency()
+                            problems = aps.processing.Comments.get('Problems', [])
+                            parameterization = aps.processing.Comments.get('Parameterization', [])
+                            other = aps.processing.Comments.get('Other', [])
+                            ok, txt = aps.make_analysis_report(is_ivs, problems, parameterization, other, auto=analyst)
+                            if ok:
+                                aps.processing.TempReport = tempfile.NamedTemporaryFile(
+                                    prefix='{}_report_'.format(aps.session.code), suffix='.txt', delete=False).name
+                                with open(aps.processing.TempReport, 'w') as out:
+                                    out.write(txt)
+                                aps.logit('submit analysis report and spoolfile')
+                                ans = aps.submit_report(is_ivs)
+                                if not aps.has_errors:
+                                    summary.append(f'{aps.processing.Reports[-1]} submitted')
+                                    summary.append(f'{aps.processing.SpoolFiles[-1]} submitted')
+                                    for file_name in ans:
+                                        aps.logit(f'{file_name} will be uploaded later')
+                                    # Send email to IVS
+                                    if msg := aps.send_analyst_email('last'):
+                                        aps.errors(f'Failed sending report {msg}')
+                                    else:
+                                        summary.append('Analysis report sent to IVS mail')
+                except Exception as exc:
+                    aps.errors(f'APS failed {str(exc)}')
+            self.info(f'{dbname} - end of aps')
+            err = aps.errors
 
-        self.info(f'{dbname} - end of aps')
-        err = aps.errors if ok else nusolve_ans
         self.send_auto_processing_email("\n".join(summary), err)
 
     # Execute pre-nuSolve applications
@@ -520,7 +527,7 @@ class VGOSDBController:
         comments = [f'{self.agency} is {"" if is_ivs else "not "}the IVS analysis center']
         # Submit database if IVS analysis center
         if is_ivs:
-            aps = APS(self.vgosdb.name)
+            aps = APS(self.vgosdb.name, read_corr=True)
             if not aps.has_errors:
                 ans = aps.submit_results('DB')
                 self.info(msg := f'{self.vgosdb.name}.tgz '

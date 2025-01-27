@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+source /sgpvlbi/progs/set_adap
+#
+# Execute
+python $APP_DIR/src/vgosdb/fetch.py -c $ADAP_CONFIG $@

@@ -1,0 +1,7 @@
+#!/bin/bash
+# Kill gunicorn
+pkill gunicorn
+#
+sleep 2
+#Restart gunicorn
+nohup /sgpvlbi/progs/web/start_gunicorn &> /dev/null &

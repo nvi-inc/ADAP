@@ -2,7 +2,7 @@
 # Start virtual environment
 source /sgpvlbi/progs/set_adap.csh
 #
-# Set XDG tempopary folder for sudo_user
+# Set XDG temporary folder for sudo_user
 setenv XDG_RUNTIME_DIR  /tmp/runtime-$SUDO_USER
 #
 # Set QT environment variables

@@ -71,7 +71,7 @@ class Section:
         self.spl = spl
         self.run_id = self.spl.line.strip().split()[1]
         self.POST2005 = False
-        self.CORRELATION = [0] * 28
+        self.CORRELATION = ['NA'] * 28
         self.Duration = 0
         self.stats = {'session': {}, 'baselines': {}, 'stations': {}, 'sources': {}}
         self.parameters = []
@@ -115,10 +115,14 @@ class Section:
 
     def read_eop_correlation(self):
         self.CORRELATION = []
+        print('CORRELATION')
         for row in range(8):
             if self.spl.has_next():
+                print(self.spl.line)
+                print(self.spl.line[12:])
                 # Extract all values in row except the last 1.000
                 self.CORRELATION.extend([to_float(val) for val in re.findall('.{1,8}', self.spl.line[12:])[:-1]])
+                print(self.CORRELATION)
 
     @property
     def has_eop(self):
@@ -202,7 +206,7 @@ class Section:
 
     def fmt_val(self, val, err, width, precision):
         if err < 1.0E-20:
-            return '{val:{width}s}'.format(width=width, val='-0')
+            return '{val:{width}s}'.format(width=width, val='NA')
         string = '{val:{width}.{precision}f}'.format(width=width, precision=precision, val=val)
         if width - precision == 2 and string.startswith('-0.'):
             return '-' + string[2:]
@@ -212,7 +216,6 @@ class Section:
         # Check if section has EOP data
         if not (mjd_eop := getattr(self, 'MJD_EOP', None)):
            return ''
-
         # Write EOP epoch, db_name and session name
         name = self.header.get('Experiment code', ses_id).lower()
         vals = [f'  {mjd_eop:12.6f} {self.DB_NAME:<24} {name:<12s}']
@@ -230,14 +233,15 @@ class Section:
                 vals.append(self.fmt_val(data[_id] * scale, data[1], width, precision))
         # Write correlation
         for index in [1, 6, 8, 27, 14, 10, 12]:
-            val = self.CORRELATION[index] if hasattr(self, 'CORRELATION') else 0.0
-            vals.append(f'{val:6.4f}'.replace('-0.', '-.'))
+            val = self.CORRELATION[index] if hasattr(self, 'CORRELATION') else 'NA'
+            vals.append(val if val == 'NA' else f'{val:6.4f}'.replace('-0.', '-.'))
 
         # Define network
         if self.stats['stations']:
             network = [stations[name] for name in self.stats['stations'] if name in stations]
         else:
-            network = [stations[name] for bl in self.stats['baselines'] for name in bl.split('|') if name in stations]
+            network = [stations[name] for (bl, stat) in self.stats['baselines'].items() for name in bl.split('|')
+                       if stat['used'] > 0 and name in stations]
         network = sorted(list(set(network)))  # Sorted, oo duplicate
 
         # Write duration, WRMS,  number of used observation, nutation epoch and network
