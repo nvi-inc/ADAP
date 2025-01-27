@@ -194,7 +194,6 @@ if __name__ == '__main__':
 
     args = app.init(parser.parse_args())
 
-    print(args.app)
     if (killer := VLBIKiller(['all'] if args.modified else args.names)).alive():
         if args.modified:
             killer.find_apps(args.names)

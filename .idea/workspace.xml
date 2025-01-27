@@ -5,57 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d45bb200-62f8-4f7f-b089-cb0df8ef62ad" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/progs/bin/reset_web" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/progs/bin/ses" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/performance/__main__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progs/bin/adap" beforeDir="false" afterPath="$PROJECT_DIR$/progs/bin/adap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progs/bin/andash" beforeDir="false" afterPath="$PROJECT_DIR$/progs/bin/andash" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progs/bin/aps2023a" beforeDir="false" afterPath="$PROJECT_DIR$/progs/bin/aps2023a" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progs/bin/submitted" beforeDir="false" afterPath="$PROJECT_DIR$/progs/bin/submitted" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progs/bin/toascii" beforeDir="false" afterPath="$PROJECT_DIR$/progs/bin/toascii" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progs/bin/uploaded" beforeDir="false" afterPath="$PROJECT_DIR$/progs/bin/uploaded" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progs/bin/vcopy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/progs/bin/vfolder" beforeDir="false" afterPath="$PROJECT_DIR$/progs/bin/vfolder" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progs/bin/vget" beforeDir="false" afterPath="$PROJECT_DIR$/progs/bin/vget" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progs/bin/vkill" beforeDir="false" afterPath="$PROJECT_DIR$/progs/bin/vkill" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progs/set_adap" beforeDir="false" afterPath="$PROJECT_DIR$/progs/set_adap" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/progs/set_adap.csh" beforeDir="false" afterPath="$PROJECT_DIR$/progs/set_adap.csh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/analyzed" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/analyzed" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/andash" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/aps" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/auxfiles" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/auxfiles" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/chkskd" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/chkskd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/control" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/control" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/correlators" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/correlators" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/database" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/database" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/datacenters" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/datacenters" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/fetch_vgosdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/intmonit" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/intmonit" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/logger" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/logger" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/massloading" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/massloading" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/mets" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/mets" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/scanner.corr" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/scanner.corr" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/scanner.dc" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/scanner.dc" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/today" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/today" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/uploader" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/uploader" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/vget" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/vgosdb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/vgosdb.csh" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/vgosdb.csh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/vlbalogs" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/vlbalogs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/vmf" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/vmf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/watchdog" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/watchdog" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scripts/web" beforeDir="false" afterPath="$PROJECT_DIR$/scripts/web" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/__main__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/__main__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/eob.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/eob.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/eopm.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/eopm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/aps/spool.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/aps/spool.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tools/kill.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/tools/kill.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vgosdb/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vgosdb/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vgosdb/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vgosdb/controller.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vgosdb/correlator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vgosdb/correlator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/vgosdb/wrapper.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/vgosdb/wrapper.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
